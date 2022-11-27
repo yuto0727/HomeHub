@@ -34,15 +34,15 @@ class Move_Motor:
         if direction == 1:
             GPIO.output(self.pin_motor_A, GPIO.HIGH)
             GPIO.output(self.pin_motor_B, GPIO.LOW)
-            self.pwm.start(speed)
+            self.pwm.ChangeDutyCycle(speed)
         elif direction == -1:
             GPIO.output(self.pin_motor_A, GPIO.LOW)
             GPIO.output(self.pin_motor_B, GPIO.HIGH)
-            self.pwm.start(speed)
+            self.pwm.ChangeDutyCycle(speed)
         elif direction == 0:
             GPIO.output(self.pin_motor_A, GPIO.LOW)
             GPIO.output(self.pin_motor_B, GPIO.LOW)
-            self.pwm.start(0)
+            self.pwm.ChangeDutyCycle(0)
         else:
             pass
 
