@@ -6,7 +6,6 @@ GPIO.setmode(GPIO.BCM)
 OUTPUT_PINS = {}
 OUTPUT_PINS["MOTOR_A"] = 20
 OUTPUT_PINS["MOTOR_B"] = 21
-OUTPUT_PINS["MOTOR_PWM"] = 13
 
 SPI_PINS = {}
 SPI_PINS["MOSI"] = 10
@@ -15,60 +14,51 @@ SPI_PINS["CLK"] = 11
 SPI_PINS["CE0"] = 8
 
 class Move_Motor:
-    def __init__(self, pin_motor_A, pin_motor_B, pin_pwm):
+    def __init__(self, pin_motor_A, pin_motor_B):
         self.pin_motor_A = pin_motor_A
         self.pin_motor_B = pin_motor_B
-        self.pin_pwm = pin_pwm
 
         GPIO.setup(self.pin_motor_A, GPIO.OUT)
         GPIO.setup(self.pin_motor_B, GPIO.OUT)
-        GPIO.setup(self.pin_pwm, GPIO.OUT)
-        # self.pwm = GPIO.PWM(self.pin_pwm, 50)
 
-        GPIO.output(self.pin_motor_A, GPIO.LOW)
-        GPIO.output(self.pin_motor_B, GPIO.LOW)
+        self.pwm_A = GPIO.PWM(self.pin_motor_A, 50)
+        self.pwm_B = GPIO.PWM(self.pin_motor_B, 50)
 
-        GPIO.output(self.pin_pwm, GPIO.HIGH)
-        # self.pwm.start(0)
+        self.pwm_A.start(0)
+        self.pwm_B.start(0)
 
-    def move(self, direction, speed):
+    def move(self, speed, direction):
+        print(f"direction:{direction}, speed:{speed}")
 
         if direction == 1:
-            print("modeA", direction, speed)
-            GPIO.output(self.pin_motor_A, GPIO.HIGH)
-            GPIO.output(self.pin_motor_B, GPIO.LOW)
-            # self.pwm.ChangeDutyCycle(speed)
+            self.pwm_A.ChangeDutyCycle(speed)
+            self.pwm_B.ChangeDutyCycle(0)
         elif direction == -1:
-            print("modeB", direction, speed)
-            GPIO.output(self.pin_motor_A, GPIO.LOW)
-            GPIO.output(self.pin_motor_B, GPIO.HIGH)
-            # self.pwm.ChangeDutyCycle(speed)
+            self.pwm_A.ChangeDutyCycle(0)
+            self.pwm_B.ChangeDutyCycle(speed)
         elif direction == 0:
-            print("modeC", direction, speed)
-            GPIO.output(self.pin_motor_A, GPIO.LOW)
-            GPIO.output(self.pin_motor_B, GPIO.LOW)
-            # self.pwm.ChangeDutyCycle(0)
+            self.pwm_A.ChangeDutyCycle(0)
+            self.pwm_B.ChangeDutyCycle(0)
         else:
-            pass
+            print("Error")
 
 def main():
-    motor = Move_Motor(OUTPUT_PINS["MOTOR_A"], OUTPUT_PINS["MOTOR_B"], OUTPUT_PINS["MOTOR_PWM"])
+    motor = Move_Motor(OUTPUT_PINS["MOTOR_A"], OUTPUT_PINS["MOTOR_B"])
 
     try:
         while True:
-            # for i in range(100):
-            #     motor.move(1, i)
-            #     sleep(0.1)
+            for i in range(30, 101, 2):
+                motor.move(i, -1)
+                sleep(0.02)
 
-            motor.move(100, 1)
-            sleep(5)
+            sleep(2)
 
-            # for i in range(100):
-            #     motor.move(-1, i)
-            #     sleep(0.1)
+            for i in range(100, 0, -2):
+                motor.move(i, -1)
+                sleep(0.01)
 
-            motor.move(100, -1)
-            sleep(5)
+            motor.move(0, 0)
+            sleep(2)
     except:
         GPIO.cleanup()
 
