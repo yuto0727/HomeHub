@@ -23,26 +23,28 @@ class Move_Motor:
         GPIO.setup(self.pin_motor_A, GPIO.OUT)
         GPIO.setup(self.pin_motor_B, GPIO.OUT)
         GPIO.setup(self.pin_pwm, GPIO.OUT)
-        self.pwm = GPIO.PWM(self.pin_pwm, 50)
+        # self.pwm = GPIO.PWM(self.pin_pwm, 50)
 
         GPIO.output(self.pin_motor_A, GPIO.LOW)
         GPIO.output(self.pin_motor_B, GPIO.LOW)
-        self.pwm.start(0)
+
+        GPIO.output(self.pin_pwm, GPIO.HIGH)
+        # self.pwm.start(0)
 
     def move(self, direction, speed):
         print(direction, speed)
         if direction == 1:
             GPIO.output(self.pin_motor_A, GPIO.HIGH)
             GPIO.output(self.pin_motor_B, GPIO.LOW)
-            self.pwm.ChangeDutyCycle(speed)
+            # self.pwm.ChangeDutyCycle(speed)
         elif direction == -1:
             GPIO.output(self.pin_motor_A, GPIO.LOW)
             GPIO.output(self.pin_motor_B, GPIO.HIGH)
-            self.pwm.ChangeDutyCycle(speed)
+            # self.pwm.ChangeDutyCycle(speed)
         elif direction == 0:
             GPIO.output(self.pin_motor_A, GPIO.LOW)
             GPIO.output(self.pin_motor_B, GPIO.LOW)
-            self.pwm.ChangeDutyCycle(0)
+            # self.pwm.ChangeDutyCycle(0)
         else:
             pass
 
