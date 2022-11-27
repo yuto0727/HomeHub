@@ -47,13 +47,29 @@ def main():
 
     try:
         while True:
-            for i in range(30, 101, 2):
-                motor.move(i, -1)
-                sleep(0.02)
+            for i in range(0, 101, 1):
+                motor.move(i, 1)
+                sleep(0.01)
 
             sleep(2)
 
-            for i in range(100, 0, -2):
+            for i in range(100, 0, -1):
+                motor.move(i, 1)
+                sleep(0.01)
+
+            motor.move(0, 0)
+            sleep(2)
+
+
+
+
+            for i in range(0, 101, 1):
+                motor.move(i, -1)
+                sleep(0.01)
+
+            sleep(2.2)
+
+            for i in range(100, 0, -1):
                 motor.move(i, -1)
                 sleep(0.01)
 
