@@ -32,16 +32,19 @@ class Move_Motor:
         # self.pwm.start(0)
 
     def move(self, direction, speed):
-        print(direction, speed)
+
         if direction == 1:
+            print("modeA", direction, speed)
             GPIO.output(self.pin_motor_A, GPIO.HIGH)
             GPIO.output(self.pin_motor_B, GPIO.LOW)
             # self.pwm.ChangeDutyCycle(speed)
         elif direction == -1:
+            print("modeB", direction, speed)
             GPIO.output(self.pin_motor_A, GPIO.LOW)
             GPIO.output(self.pin_motor_B, GPIO.HIGH)
             # self.pwm.ChangeDutyCycle(speed)
         elif direction == 0:
+            print("modeC", direction, speed)
             GPIO.output(self.pin_motor_A, GPIO.LOW)
             GPIO.output(self.pin_motor_B, GPIO.LOW)
             # self.pwm.ChangeDutyCycle(0)
