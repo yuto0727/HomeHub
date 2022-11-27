@@ -49,19 +49,19 @@ def main():
     motor = Move_Motor(OUTPUT_PINS["MOTOR_A"], OUTPUT_PINS["MOTOR_B"], OUTPUT_PINS["MOTOR_PWM"])
 
     while True:
-        for i in range(100):
-            motor.move(1, i)
-            sleep(0.1)
+        # for i in range(100):
+        #     motor.move(1, i)
+        #     sleep(0.1)
 
-        motor.move(0, 0)
-        sleep(1)
+        motor.move(100, 1)
+        sleep(5)
 
-        for i in range(100):
-            motor.move(-1, i)
-            sleep(0.1)
+        # for i in range(100):
+        #     motor.move(-1, i)
+        #     sleep(0.1)
 
-        motor.move(0, 0)
-        sleep(1)
+        motor.move(100, -1)
+        sleep(5)
 
 if __name__ == "__main__":
     main()
