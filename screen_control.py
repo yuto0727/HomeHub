@@ -1,17 +1,12 @@
 from time import sleep
 import RPi.GPIO as GPIO
+import sys, spidev
 
 GPIO.setmode(GPIO.BCM)
 
 OUTPUT_PINS = {}
 OUTPUT_PINS["MOTOR_A"] = 20
 OUTPUT_PINS["MOTOR_B"] = 21
-
-SPI_PINS = {}
-SPI_PINS["MOSI"] = 10
-SPI_PINS["MISO"] = 9
-SPI_PINS["CLK"] = 11
-SPI_PINS["CE0"] = 8
 
 class Move_Motor:
     def __init__(self, pin_motor_A, pin_motor_B):
@@ -42,39 +37,24 @@ class Move_Motor:
         else:
             print("Error")
 
+class AD_Converter:
+    def __init__(self):
+        self.spi = spidev.SpiDev()
+        self.spi.open(0, 0)
+        self.spi.max_speed_hz = 1000000
+
+    def get_val(self):
+        resp = self.spi.xfer2([0x68, 0x00])
+        val = ((resp[0] << 8) + resp[1]) & 0x3FF
+        return val
+
 def main():
     motor = Move_Motor(OUTPUT_PINS["MOTOR_A"], OUTPUT_PINS["MOTOR_B"])
+    rotation_sensor = AD_Converter()
 
     try:
         while True:
-            for i in range(0, 101, 1):
-                motor.move(i, 1)
-                sleep(0.01)
-
-            sleep(2)
-
-            for i in range(100, 0, -1):
-                motor.move(i, 1)
-                sleep(0.01)
-
-            motor.move(0, 0)
-            sleep(2)
-
-
-
-
-            for i in range(0, 101, 1):
-                motor.move(i, -1)
-                sleep(0.01)
-
-            sleep(2.2)
-
-            for i in range(100, 0, -1):
-                motor.move(i, -1)
-                sleep(0.01)
-
-            motor.move(0, 0)
-            sleep(2)
+            print(rotation_sensor.get_val())
     except:
         GPIO.cleanup()
 
