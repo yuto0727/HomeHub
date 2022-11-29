@@ -8,6 +8,19 @@ OUTPUT_PINS = {}
 OUTPUT_PINS["MOTOR_A"] = 20
 OUTPUT_PINS["MOTOR_B"] = 21
 
+def main():
+    motor = Move_Motor(OUTPUT_PINS["MOTOR_A"], OUTPUT_PINS["MOTOR_B"])
+    rotation_sensor = AD_Converter()
+
+    try:
+        while True:
+            print(rotation_sensor.get_val())
+            sleep(0.5)
+    except:
+        GPIO.cleanup()
+
+
+
 class Move_Motor:
     def __init__(self, pin_motor_A, pin_motor_B):
         self.pin_motor_A = pin_motor_A
@@ -47,17 +60,6 @@ class AD_Converter:
         resp = self.spi.xfer2([0x78, 0x00])
         val = ((resp[0] << 8) + resp[1]) & 0x3FF
         return val
-
-def main():
-    motor = Move_Motor(OUTPUT_PINS["MOTOR_A"], OUTPUT_PINS["MOTOR_B"])
-    rotation_sensor = AD_Converter()
-
-    try:
-        while True:
-            print(rotation_sensor.get_val())
-            sleep(0.5)
-    except:
-        GPIO.cleanup()
 
 if __name__ == "__main__":
     main()
