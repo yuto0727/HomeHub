@@ -2,7 +2,7 @@ from time import sleep
 import RPi.GPIO as GPIO
 import pigpio, os, json
 
-IR_RX_PIN = 26
+IR_RX_PIN = 18
 GLITCH = 100
 PRE_MS = 200
 POST_MS = 15
@@ -19,6 +19,51 @@ last_tick = 0
 in_code = False
 code = []
 fetching_code = False
+
+def main():
+    global fetching_code, code
+
+    pi = pigpio.pi()
+
+    if not pi.connected:
+        exit(0)
+
+    with open('codes_for_control') as f:
+        key_config = json.load(f)
+        pi.set_mode(IR_RX_PIN, pigpio.INPUT)
+        pi.set_glitch_filter(IR_RX_PIN, GLITCH)
+
+        cb = pi.callback(IR_RX_PIN, pigpio.EITHER_EDGE, cbf)
+
+        try:
+            while True:
+                code = []
+                fetching_code = True
+                while fetching_code:
+                    time.sleep(0.1)
+
+                time.sleep(0.5)
+
+                for key, val in key_config.items():
+                    if compare(val, code[:]):
+                        key_name = key
+
+                if key_name == "power":
+                    print("press power")
+                elif key_name == "volume_up":
+                    print("press volume_up")
+                elif key_name == "volume_down":
+                    print("press volume_down")
+                elif key_name == "volume_mute":
+                    print("press volume_mute")
+                else:
+                    pass
+
+        except KeyboardInterrupt:
+            pass
+        finally:
+            pi.stop()
+
 
 
 def normalize(c):
@@ -75,16 +120,13 @@ def end_of_code():
 
 
 def cbf(gpio, level, tick):
-
     global last_tick, in_code, code, fetching_code
 
     if level != pigpio.TIMEOUT:
-
         edge = pigpio.tickDiff(last_tick, tick)
         last_tick = tick
 
         if fetching_code:
-
             if (edge > PRE_US) and (not in_code):  # Start of a code.
                 in_code = True
                 pi.set_watchdog(IR_RX_PIN, POST_MS)  # Start watchdog.
@@ -103,68 +145,5 @@ def cbf(gpio, level, tick):
             in_code = False
             end_of_code()
 
-
-
-
-
-
-
-
-
-
-
-pi = pigpio.pi()  # Connect to Pi.
-
-if not pi.connected:
-    exit(0)
-
-with open('car_mp3') as f:
-    key_config = json.load(f)
-
-    pi.set_mode(IR_RX_PIN, pigpio.INPUT)  # IR RX connected to this IR_RX_PIN.
-
-    pi.set_glitch_filter(IR_RX_PIN, GLITCH)  # Ignore glitches.
-
-    cb = pi.callback(IR_RX_PIN, pigpio.EITHER_EDGE, cbf)
-
-    try:
-        while True:
-            code = []
-            fetching_code = True
-            while fetching_code:
-                time.sleep(0.1)
-            time.sleep(0.5)
-            key_name = "-"
-            for key, val in key_config.items():
-                if compare(val, code[:]):
-                    key_name = key
-            if key_name == "b0":
-                # ALL -> ON
-                GPIO.output(GREEN_LED_PIN, GPIO.HIGH)
-                GPIO.output(YELLOW_LED_PIN, GPIO.HIGH)
-                GPIO.output(RED_LED_PIN, GPIO.HIGH)
-            elif key_name == "b1":
-                # GREEN -> ON, OTHER -> OFF
-                GPIO.output(GREEN_LED_PIN, GPIO.HIGH)
-                GPIO.output(YELLOW_LED_PIN, GPIO.LOW)
-                GPIO.output(RED_LED_PIN, GPIO.LOW)
-            elif key_name == "b2":
-                # YELLOW -> ON, OTHER -> OFF
-                GPIO.output(GREEN_LED_PIN, GPIO.LOW)
-                GPIO.output(YELLOW_LED_PIN, GPIO.HIGH)
-                GPIO.output(RED_LED_PIN, GPIO.LOW)
-            elif key_name == "b3":
-                # RED -> ON, OTHER -> OFF
-                GPIO.output(GREEN_LED_PIN, GPIO.LOW)
-                GPIO.output(YELLOW_LED_PIN, GPIO.LOW)
-                GPIO.output(RED_LED_PIN, GPIO.HIGH)
-            else:
-                # ALL -> OFF
-                GPIO.output(GREEN_LED_PIN, GPIO.LOW)
-                GPIO.output(YELLOW_LED_PIN, GPIO.LOW)
-                GPIO.output(RED_LED_PIN, GPIO.LOW)
-
-    except KeyboardInterrupt:
-        pass
-    finally:
-        pi.stop()  # Disconnect from Pi.
+if __name__ == "__main__":
+    main()
