@@ -55,7 +55,7 @@ def main():
     try:
         while True:
             print(rotation_sensor.get_val())
-            sleep(0.1)
+            sleep(0.5)
     except:
         GPIO.cleanup()
 
