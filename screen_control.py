@@ -44,7 +44,7 @@ class AD_Converter:
         self.spi.max_speed_hz = 1000000
 
     def get_val(self):
-        resp = self.spi.xfer2([0x68, 0x00])
+        resp = self.spi.xfer2([0x78, 0x00])
         val = ((resp[0] << 8) + resp[1]) & 0x3FF
         return val
 
@@ -55,6 +55,7 @@ def main():
     try:
         while True:
             print(rotation_sensor.get_val())
+            sleep(0.5)
     except:
         GPIO.cleanup()
 
