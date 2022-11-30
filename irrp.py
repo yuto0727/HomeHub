@@ -112,7 +112,7 @@ code = []
 fetching_code = False
 
 def main():
-    global code, fetching_code
+    global code, fetching_code, pi
 
     pi = pigpio.pi()  # Connect to Pi.
 

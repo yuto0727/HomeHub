@@ -16,17 +16,17 @@ ir.TOLER_MAX = (100 + TOLERANCE) / 100.0
 
 
 def main():
-    pi = pigpio.pi()
+    ir.pi = pigpio.pi()
 
-    if not pi.connected:
+    if not ir.pi.connected:
         exit(0)
 
     with open('codes_for_control') as f:
         key_config = json.load(f)
-        pi.set_mode(ir.GPIO, pigpio.INPUT)
-        pi.set_glitch_filter(ir.GPIO, ir.GLITCH)
+        ir.pi.set_mode(ir.GPIO, pigpio.INPUT)
+        ir.pi.set_glitch_filter(ir.GPIO, ir.GLITCH)
 
-        cb = pi.callback(ir.GPIO, pigpio.EITHER_EDGE, ir.cbf)
+        cb = ir.pi.callback(ir.GPIO, pigpio.EITHER_EDGE, ir.cbf)
 
         try:
             while True:
@@ -55,4 +55,4 @@ def main():
         except KeyboardInterrupt:
             pass
         finally:
-            pi.stop()
+            ir.pi.stop()
