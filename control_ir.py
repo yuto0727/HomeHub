@@ -1,5 +1,6 @@
 import irrp as ir
-import pigpio
+from time import sleep
+import pigpio, json
 
 ir.GPIO = 18
 
@@ -18,6 +19,10 @@ ir.TOLER_MAX = (100 + ir.TOLERANCE) / 100.0
 
 def main():
     ir.pi = pigpio.pi()
+    ir.last_tick = 0
+    ir.in_code = False
+    ir.code = []
+    ir.fetching_code = False
 
     if not ir.pi.connected:
         exit(0)
@@ -30,13 +35,14 @@ def main():
         cb = ir.pi.callback(ir.GPIO, pigpio.EITHER_EDGE, ir.cbf)
 
         try:
+            print("reading...")
             while True:
                 ir.code = []
                 ir.fetching_code = True
                 while ir.fetching_code:
-                    time.sleep(0.1)
+                    sleep(0.02)
 
-                time.sleep(0.5)
+                sleep(0.5)
 
                 for key, val in key_config.items():
                     if ir.compare(val, ir.code[:]):
