@@ -51,9 +51,7 @@ def main():
                 global_val.write_val(dic)
 
                 # チャタリング防止
-                while GPIO.input(INPUT_PINS["REMOTE_A"]):
-                    sleep(0.02)
-                print("break")
+                sleep(2)
 
             elif GPIO.input(INPUT_PINS["REMOTE_B"]) and not prev_status["REMOTE_B"]:
                 # Bボタン -> スクリーン停止
