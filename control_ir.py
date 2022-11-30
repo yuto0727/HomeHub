@@ -1,4 +1,5 @@
 import irrp as ir
+import pigpio
 
 ir.GPIO = 18
 
