@@ -50,6 +50,7 @@ def main():
                         break
                     sleep(0.02)
 
+                key_name = ""
                 for key, val in key_config.items():
                     if ir.compare(val, ir.code[:]):
                         key_name = key
