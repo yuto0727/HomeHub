@@ -41,13 +41,13 @@ def main():
                     if ir.compare(val, ir.code[:]):
                         key_name = key
 
-                if key_name == "power":
+                if key_name == "firetv:power":
                     print("press power")
-                elif key_name == "volume_up":
+                elif key_name == "firetv:volume_up":
                     print("press volume_up")
-                elif key_name == "volume_down":
+                elif key_name == "firetv:volume_down":
                     print("press volume_down")
-                elif key_name == "volume_mute":
+                elif key_name == "firetv:volume_mute":
                     print("press volume_mute")
                 else:
                     pass
