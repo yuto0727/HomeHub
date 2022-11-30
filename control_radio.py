@@ -59,10 +59,12 @@ def main():
 
             elif GPIO.input(INPUT_PINS["REMOTE_C"]) and not prev_status["REMOTE_C"]:
                 # Cボタン -> プロジェクター電源
+                print("C")
                 pass
 
             elif GPIO.input(INPUT_PINS["REMOTE_D"]) and not prev_status["REMOTE_D"]:
                 # Dボタン -> LEDライト電源
+                print("D")
                 dic = global_val.read_val()
                 if dic["led"] == 1:
                     dic["led"] = 0
