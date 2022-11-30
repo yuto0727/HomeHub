@@ -45,7 +45,7 @@ def main():
                 ir.code = []
                 ir.fetching_code = True
                 i = 0
-                for i in range(25):
+                for i in range(50):
                     if not ir.fetching_code:
                         break
                     sleep(0.02)
