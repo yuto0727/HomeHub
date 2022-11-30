@@ -33,7 +33,7 @@ def main():
 
     # motor     -> 0:停止  1:出す 2:しまう
     # screen_st -> 0: 中間 1:出切 2:巻切
-    dic = {"led":0, "motor":0, "screen_st":0}
+    dic = {"led":0, "motor":0, "screen_st":2}
     global_val.write_val(dic)
 
     try:
