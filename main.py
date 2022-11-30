@@ -20,6 +20,8 @@ def main():
         while True:
             dic = global_val.read_val()
             print(dic)
+
+            led.switch(dic["led"])
             sleep(0.2)
 
     except KeyboardInterrupt:
@@ -69,15 +71,12 @@ class AD_Converter:
 
 class LED_light:
     def __init__(self, pin):
-        self.sw = False
         self.pin = pin
         GPIO.setup(self.pin, GPIO.OUT)
         GPIO.output(self.pin, GPIO.LOW)
 
-    def switch(self):
-        self.sw = not self.sw
-
-        if self.sw:
+    def switch(self, status):
+        if status:
             GPIO.output(self.pin, GPIO.LOW)
         else:
             GPIO.output(self.pin, GPIO.HIGH)
