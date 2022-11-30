@@ -35,7 +35,7 @@ def main():
         while True:
             dic = global_val.read_val()
             enc = rotation_sensor.get_val()
-            print(dic)
+            print(dic, enc)
 
             # screen_st 更新
             if TARGET_CLOSE-MARGIN <= enc <= TARGET_CLOSE+MARGIN:
@@ -69,7 +69,7 @@ def main():
                     power = min(max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(enc-TARGET_CLOSE)), 100)
                     motor.move(speed=power, action="up")
 
-
+            global_val.write_val(dic)
             led.switch(dic["led"])
             sleep(0.02)
 
