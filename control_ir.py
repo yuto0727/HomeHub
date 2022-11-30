@@ -1,6 +1,7 @@
 import irrp as ir
 from time import sleep
 import pigpio, json
+import global_val as g
 
 ir.GPIO = 18
 
@@ -23,6 +24,8 @@ def main():
     ir.in_code = False
     ir.code = []
     ir.fetching_code = False
+
+    g.data_ir = [0, 0, 0, 0]
 
     if not ir.pi.connected:
         exit(0)
@@ -50,12 +53,16 @@ def main():
 
                 if key_name == "firetv:power":
                     print("press power")
+                    g.data_ir[0] = 1
                 elif key_name == "firetv:volume_up":
                     print("press volume_up")
+                    g.data_ir[1] = 1
                 elif key_name == "firetv:volume_down":
                     print("press volume_down")
+                    g.data_ir[2] = 1
                 elif key_name == "firetv:volume_mute":
                     print("press volume_mute")
+                    g.data_ir[3] = 1
                 else:
                     pass
 

@@ -1,6 +1,7 @@
 from time import sleep
 import RPi.GPIO as GPIO
 import sys, spidev
+import global_val as g
 
 GPIO.setmode(GPIO.BCM)
 
@@ -13,8 +14,10 @@ def main():
 
     try:
         while True:
-            print(rotation_sensor.get_val())
-            sleep(0.5)
+            print(g.data_ir, g.data_radio)
+            sleep(0.2)
+            g.data_ir = [0, 0, 0, 0]
+            g.data_radio = [0, 0, 0, 0]
     except:
         GPIO.cleanup()
 
