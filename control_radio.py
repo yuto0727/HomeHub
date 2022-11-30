@@ -17,13 +17,13 @@ try:
     g.data_radio = [0, 0, 0, 0]
 
     while True:
-        if GPIO.input(INPUT_SW_PINS["REMOTE_A"]) == GPIO.HIGH:
+        if GPIO.input(INPUT_PINS["REMOTE_A"]) == GPIO.HIGH:
             g.data_radio[0] = 1
-        if GPIO.input(INPUT_SW_PINS["REMOTE_B"]) == GPIO.HIGH:
+        if GPIO.input(INPUT_PINS["REMOTE_B"]) == GPIO.HIGH:
             g.data_radio[1] = 1
-        if GPIO.input(INPUT_SW_PINS["REMOTE_C"]) == GPIO.HIGH:
+        if GPIO.input(INPUT_PINS["REMOTE_C"]) == GPIO.HIGH:
             g.data_radio[2] = 1
-        if GPIO.input(INPUT_SW_PINS["REMOTE_D"]) == GPIO.HIGH:
+        if GPIO.input(INPUT_PINS["REMOTE_D"]) == GPIO.HIGH:
             g.data_radio[3] = 1
 
         sleep(0.1)
