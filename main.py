@@ -18,7 +18,7 @@ def main():
 
     try:
         while True:
-            s = int(input("sec"))
+            s = float(input("sec"))
             d = input("action")
 
 
