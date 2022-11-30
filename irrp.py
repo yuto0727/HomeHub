@@ -62,54 +62,6 @@ import argparse
 
 import pigpio  # http://abyz.co.uk/rpi/pigpio/python.html
 
-p = argparse.ArgumentParser()
-
-g = p.add_mutually_exclusive_group(required=True)
-g.add_argument("-p", "--play",   help="play keys",   action="store_true")
-g.add_argument("-r", "--record", help="record keys", action="store_true")
-
-p.add_argument("-g", "--gpio", help="GPIO for RX/TX", required=True, type=int)
-p.add_argument("-f", "--file", help="Filename",       required=True)
-
-p.add_argument('id', nargs='+', type=str, help='IR codes')
-
-p.add_argument("--freq",      help="frequency kHz",   type=float, default=38.0)
-
-p.add_argument("--gap",       help="key gap ms",        type=int, default=100)
-p.add_argument("--glitch",    help="glitch us",         type=int, default=100)
-p.add_argument("--post",      help="postamble ms",      type=int, default=15)
-p.add_argument("--pre",       help="preamble ms",       type=int, default=200)
-p.add_argument("--short",     help="short code length", type=int, default=10)
-p.add_argument("--tolerance", help="tolerance percent", type=int, default=15)
-
-p.add_argument("-v", "--verbose", help="Be verbose",     action="store_true")
-p.add_argument("--no-confirm", help="No confirm needed", action="store_true")
-
-args = p.parse_args()
-
-GPIO = args.gpio
-FILE = args.file
-GLITCH = args.glitch
-PRE_MS = args.pre
-POST_MS = args.post
-FREQ = args.freq
-VERBOSE = args.verbose
-SHORT = args.short
-GAP_MS = args.gap
-NO_CONFIRM = args.no_confirm
-TOLERANCE = args.tolerance
-
-POST_US = POST_MS * 1000
-PRE_US = PRE_MS * 1000
-GAP_S = GAP_MS / 1000.0
-CONFIRM = not NO_CONFIRM
-TOLER_MIN = (100 - TOLERANCE) / 100.0
-TOLER_MAX = (100 + TOLERANCE) / 100.0
-
-last_tick = 0
-in_code = False
-code = []
-fetching_code = False
 
 def main():
     global code, fetching_code, pi
@@ -515,4 +467,54 @@ def cbf(gpio, level, tick):
             end_of_code()
 
 if __name__ == "__main__":
+    p = argparse.ArgumentParser()
+
+    g = p.add_mutually_exclusive_group(required=True)
+    g.add_argument("-p", "--play",   help="play keys",   action="store_true")
+    g.add_argument("-r", "--record", help="record keys", action="store_true")
+
+    p.add_argument("-g", "--gpio", help="GPIO for RX/TX", required=True, type=int)
+    p.add_argument("-f", "--file", help="Filename",       required=True)
+
+    p.add_argument('id', nargs='+', type=str, help='IR codes')
+
+    p.add_argument("--freq",      help="frequency kHz",   type=float, default=38.0)
+
+    p.add_argument("--gap",       help="key gap ms",        type=int, default=100)
+    p.add_argument("--glitch",    help="glitch us",         type=int, default=100)
+    p.add_argument("--post",      help="postamble ms",      type=int, default=15)
+    p.add_argument("--pre",       help="preamble ms",       type=int, default=200)
+    p.add_argument("--short",     help="short code length", type=int, default=10)
+    p.add_argument("--tolerance", help="tolerance percent", type=int, default=15)
+
+    p.add_argument("-v", "--verbose", help="Be verbose",     action="store_true")
+    p.add_argument("--no-confirm", help="No confirm needed", action="store_true")
+
+    args = p.parse_args()
+
+    GPIO = args.gpio
+    FILE = args.file
+    GLITCH = args.glitch
+    PRE_MS = args.pre
+    POST_MS = args.post
+    FREQ = args.freq
+    VERBOSE = args.verbose
+    SHORT = args.short
+    GAP_MS = args.gap
+    NO_CONFIRM = args.no_confirm
+    TOLERANCE = args.tolerance
+
+    POST_US = POST_MS * 1000
+    PRE_US = PRE_MS * 1000
+    GAP_S = GAP_MS / 1000.0
+    CONFIRM = not NO_CONFIRM
+    TOLER_MIN = (100 - TOLERANCE) / 100.0
+    TOLER_MAX = (100 + TOLERANCE) / 100.0
+
+    last_tick = 0
+    in_code = False
+    code = []
+    fetching_code = False
+
+    # start main
     main()
