@@ -4,12 +4,11 @@ import sys, spidev
 
 GPIO.setmode(GPIO.BCM)
 
-OUTPUT_PINS = {}
-OUTPUT_PINS["MOTOR_A"] = 20
-OUTPUT_PINS["MOTOR_B"] = 21
+MOTOR_A = 20
+MOTOR_B = 21
 
 def main():
-    motor = Move_Motor(OUTPUT_PINS["MOTOR_A"], OUTPUT_PINS["MOTOR_B"])
+    motor = Move_Motor(MOTOR_A, MOTOR_B)
     rotation_sensor = AD_Converter()
 
     try:
