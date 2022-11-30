@@ -14,7 +14,7 @@ TARGET_CLOSE = 32
 TARGET_OPEN = 1020
 
 MARGIN = 2
-SLOW_DIFF = 80
+SLOW_DIFF = 100
 MOTOR_POWER_MAX = 100
 MOTOR_POWER_MIN = 20
 
@@ -35,6 +35,7 @@ def main():
         while True:
             dic = global_val.read_val()
             enc = rotation_sensor.get_val()
+            print(dic)
 
             # screen_st 更新
             if TARGET_CLOSE-MARGIN <= enc <= TARGET_CLOSE+MARGIN:
@@ -55,7 +56,7 @@ def main():
                     motor.move(speed=0, action="stop")
                     dic["motor"] = 0
                 else:
-                    power = max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(TARGET_OPEN-enc))
+                    power = min(max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(TARGET_OPEN-enc)), 100)
                     motor.move(speed=power, action="down")
 
             elif dic["motor"] == 2:
@@ -65,7 +66,7 @@ def main():
                     motor.move(speed=0, action="stop")
                     dic["motor"] = 0
                 else:
-                    power = max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(enc-TARGET_CLOSE))
+                    power = min(max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(enc-TARGET_CLOSE)), 100)
                     motor.move(speed=power, action="up")
 
 
@@ -113,7 +114,7 @@ class Move_Motor:
         self.pwm_B.start(0)
 
     def move(self, speed, action):
-        print(f"action: {action}, speed: {speed}")
+        # print(f"action: {action}, speed: {speed}")
 
         if action == "down":
             self.pwm_A.ChangeDutyCycle(speed)
