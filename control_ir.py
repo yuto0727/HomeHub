@@ -56,3 +56,6 @@ def main():
             pass
         finally:
             ir.pi.stop()
+
+if __name__ == "__main__":
+    main()
