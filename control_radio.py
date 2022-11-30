@@ -1,7 +1,6 @@
-from time import time, sleep
+from time import sleep
 import RPi.GPIO as GPIO
-import rospy
-from std_msgs.msg import Int32MultiArray
+import global_val as g
 
 CTRL_PERIOD = 0.02
 
@@ -17,19 +16,14 @@ for j in input_pin_names:
     GPIO.setup(INPUT_PINS[j], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 try:
-    rospy.init_node('remote')
-    pub_remote = rospy.Publisher('remote', Int32MultiArray)
-    loop_rate = rospy.Rate(1/CTRL_PERIOD)
-
-    message = [0, 0, 0, 0]
+    g.data_radio = [0, 0, 0, 0]
 
     while True:
-        message[0] = GPIO.input(INPUT_SW_PINS["REMOTE_A"])
-        message[1] = GPIO.input(INPUT_SW_PINS["REMOTE_B"])
-        message[2] = GPIO.input(INPUT_SW_PINS["REMOTE_C"])
-        message[3] = GPIO.input(INPUT_SW_PINS["REMOTE_D"])
+        g.data_radio[0] = GPIO.input(INPUT_SW_PINS["REMOTE_A"])
+        g.data_radio[1] = GPIO.input(INPUT_SW_PINS["REMOTE_B"])
+        g.data_radio[2] = GPIO.input(INPUT_SW_PINS["REMOTE_C"])
+        g.data_radio[3] = GPIO.input(INPUT_SW_PINS["REMOTE_D"])
 
-        pub_remote.publish(Int32MultiArray(data=message))
-        loop_rate.sleep()
+        sleep(0.1)
 except:
     pass
