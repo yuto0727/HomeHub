@@ -43,7 +43,7 @@ class mmap_global_val:
                 self._make_file(dic)
                 self._file_open()
 
-        print("write data -> ", repr(dic).encode())
+        # print("write data -> ", repr(dic).encode())
         self.mm.seek(0)
         self.mm.write(repr(dic).encode())
 
