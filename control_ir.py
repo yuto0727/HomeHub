@@ -9,10 +9,10 @@ ir.VERBOSE = False
 ir.SHORT = 10
 ir.TOLERANCE = 15
 
-ir.POST_US = POST_MS * 1000
-ir.PRE_US = PRE_MS * 1000
-ir.TOLER_MIN = (100 - TOLERANCE) / 100.0
-ir.TOLER_MAX = (100 + TOLERANCE) / 100.0
+ir.POST_US = ir.POST_MS * 1000
+ir.PRE_US = ir.PRE_MS * 1000
+ir.TOLER_MIN = (100 - ir.TOLERANCE) / 100.0
+ir.TOLER_MAX = (100 + ir.TOLERANCE) / 100.0
 
 
 def main():
