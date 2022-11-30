@@ -18,12 +18,16 @@ try:
 
     while True:
         if GPIO.input(INPUT_PINS["REMOTE_A"]) == GPIO.HIGH:
+            print("press A")
             g.data_radio[0] = 1
         if GPIO.input(INPUT_PINS["REMOTE_B"]) == GPIO.HIGH:
+            print("press B")
             g.data_radio[1] = 1
         if GPIO.input(INPUT_PINS["REMOTE_C"]) == GPIO.HIGH:
+            print("press C")
             g.data_radio[2] = 1
         if GPIO.input(INPUT_PINS["REMOTE_D"]) == GPIO.HIGH:
+            print("press D")
             g.data_radio[3] = 1
 
         sleep(0.1)
