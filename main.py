@@ -35,7 +35,8 @@ def main():
         while True:
             dic = global_val.read_val()
             enc = rotation_sensor.get_val()
-            print(dic, enc)
+            print(dic, enc, end="")
+
 
             # screen_st 更新
             if TARGET_CLOSE-MARGIN <= enc <= TARGET_CLOSE+MARGIN:
@@ -114,7 +115,7 @@ class Move_Motor:
         self.pwm_B.start(0)
 
     def move(self, speed, action):
-        # print(f"action: {action}, speed: {speed}")
+        print(f"action: {action}, speed: {speed}")
 
         if action == "down":
             self.pwm_A.ChangeDutyCycle(speed)
