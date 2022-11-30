@@ -17,12 +17,20 @@ def main():
     global_val = mg.mmap_global_val("global_val.txt")
 
     try:
-        while True:
-            dic = global_val.read_val()
-            print(dic)
+        # while True:
+        #     dic = global_val.read_val()
+        #     print(dic)
 
-            led.switch(dic["led"])
-            sleep(0.2)
+        #     enc = rotation_sensor.get_val()
+
+
+
+        #     led.switch(dic["led"])
+        #     sleep(0.2)
+
+        motor.move(speed=10, action="down")
+        sleep(0.5)
+        motor.move(speed=0, action="stop")
 
     except KeyboardInterrupt:
         GPIO.cleanup()
@@ -43,16 +51,16 @@ class Move_Motor:
         self.pwm_A.start(0)
         self.pwm_B.start(0)
 
-    def move(self, speed, direction):
-        print(f"direction:{direction}, speed:{speed}")
+    def move(self, speed, action):
+        print(f"direction:{action}, speed:{speed}")
 
-        if direction == 1:
+        if action == "up":
             self.pwm_A.ChangeDutyCycle(speed)
             self.pwm_B.ChangeDutyCycle(0)
-        elif direction == -1:
+        elif action == "down":
             self.pwm_A.ChangeDutyCycle(0)
             self.pwm_B.ChangeDutyCycle(speed)
-        elif direction == 0:
+        elif action == "stop":
             self.pwm_A.ChangeDutyCycle(0)
             self.pwm_B.ChangeDutyCycle(0)
         else:
@@ -77,9 +85,9 @@ class LED_light:
 
     def switch(self, status):
         if status:
-            GPIO.output(self.pin, GPIO.LOW)
-        else:
             GPIO.output(self.pin, GPIO.HIGH)
+        else:
+            GPIO.output(self.pin, GPIO.LOW)
 
 if __name__ == "__main__":
     main()
