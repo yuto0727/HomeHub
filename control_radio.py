@@ -28,6 +28,7 @@ def main():
         while True:
             if GPIO.input(INPUT_PINS["REMOTE_A"]) and not prev_status["REMOTE_A"]:
                 # Aボタン -> スクリーンアップ・ダウン
+                print("A")
                 dic = global_val.read_val()
 
                 if dic["screen_st"] == 0:
@@ -51,6 +52,7 @@ def main():
 
             elif GPIO.input(INPUT_PINS["REMOTE_B"]) and not prev_status["REMOTE_B"]:
                 # Bボタン -> スクリーン停止
+                print("B")
                 dic = global_val.read_val()
                 dic["motor"] = 0
                 global_val.write_val(dic)
