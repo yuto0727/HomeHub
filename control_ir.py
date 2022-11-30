@@ -44,10 +44,11 @@ def main():
             while True:
                 ir.code = []
                 ir.fetching_code = True
-                while ir.fetching_code:
+                i = 0
+                for i in range(25):
+                    if not ir.fetching_code:
+                        break
                     sleep(0.02)
-
-                # sleep(0.5)
 
                 for key, val in key_config.items():
                     if ir.compare(val, ir.code[:]):
@@ -68,10 +69,9 @@ def main():
                     # print("press volume_mute")
                     dic["ir"] = [0, 0, 0, 1]
                 else:
-                    pass
+                    dic["ir"] = [0, 0, 0, 0]
 
                 global_val.write_val(dic)
-                print(dic["ir"])
 
     except KeyboardInterrupt:
         ir.pi.stop()
