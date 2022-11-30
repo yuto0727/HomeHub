@@ -17,23 +17,28 @@ def main():
     global_val = mg.mmap_global_val("global_val.txt")
 
     try:
-        # while True:
-        #     dic = global_val.read_val()
-        #     print(dic)
-
-        #     enc = rotation_sensor.get_val()
+        while True:
+            s = int(input("sec"))
+            d = input("action")
 
 
+            # dic = global_val.read_val()
+            # print(dic)
 
-        #     led.switch(dic["led"])
-        #     sleep(0.2)
+            motor.move(speed=50, action=d)
+            for i in range(s*10):
+                enc = rotation_sensor.get_val()
+                print(enc)
+                sleep(0.1)
+            motor.move(speed=0, action="stop")
 
-        motor.move(speed=90, action="down")
-        sleep(5)
-        motor.move(speed=0, action="stop")
-        GPIO.cleanup()
+
+            # led.switch(dic["led"])
+            # sleep(0.2)
+
 
     except KeyboardInterrupt:
+        motor.move(speed=0, action="stop")
         GPIO.cleanup()
 
 
@@ -53,7 +58,7 @@ class Move_Motor:
         self.pwm_B.start(0)
 
     def move(self, speed, action):
-        print(f"direction:{action}, speed:{speed}")
+        print(f"action: {action}, speed: {speed}")
 
         if action == "down":
             self.pwm_A.ChangeDutyCycle(speed)
