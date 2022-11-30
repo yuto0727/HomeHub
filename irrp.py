@@ -116,15 +116,15 @@ def backup(f):
     """
     f -> f.bak -> f.bak1 -> f.bak2
     """
-    try:
-        os.rename(os.path.realpath(f)+".bak1", os.path.realpath(f)+".bak2")
-    except:
-        pass
+    # try:
+    #     os.rename(os.path.realpath(f)+".bak1", os.path.realpath(f)+".bak2")
+    # except:
+    #     pass
 
-    try:
-        os.rename(os.path.realpath(f)+".bak", os.path.realpath(f)+".bak1")
-    except:
-        pass
+    # try:
+    #     os.rename(os.path.realpath(f)+".bak", os.path.realpath(f)+".bak1")
+    # except:
+    #     pass
 
     try:
         os.rename(os.path.realpath(f), os.path.realpath(f)+".bak")
