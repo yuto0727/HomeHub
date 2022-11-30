@@ -15,7 +15,7 @@ TARGET_OPEN = 1020
 
 MARGIN = 4
 SLOW_DIFF = 100
-MOTOR_POWER_MAX = 100
+MOTOR_POWER_MAX = 150
 MOTOR_POWER_MIN = 20
 
 def main():
@@ -57,7 +57,7 @@ def main():
                     motor.move(speed=0, action="stop")
                     dic["motor"] = 0
                 else:
-                    power = min(max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(TARGET_OPEN-enc)), 100)
+                    power = min(max(MOTOR_POWER_MIN, TARGET_OPEN-enc), 100)
                     motor.move(speed=power, action="down")
 
             elif dic["motor"] == 2:
@@ -67,7 +67,7 @@ def main():
                     motor.move(speed=0, action="stop")
                     dic["motor"] = 0
                 else:
-                    power = min(max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(enc-TARGET_CLOSE)), 100)
+                    power = min(max(MOTOR_POWER_MIN, enc-TARGET_CLOSE), 100)
                     motor.move(speed=power, action="up")
 
             global_val.write_val(dic)
