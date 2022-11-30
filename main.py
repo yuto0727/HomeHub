@@ -8,9 +8,11 @@ GPIO.setmode(GPIO.BCM)
 
 MOTOR_A = 20
 MOTOR_B = 21
+LED = 16
 
 def main():
     motor = Move_Motor(MOTOR_A, MOTOR_B)
+    led = LED_light(LED)
     rotation_sensor = AD_Converter()
     global_val = mg.mmap_global_val("global_val.txt")
 
@@ -64,6 +66,21 @@ class AD_Converter:
         resp = self.spi.xfer2([0x78, 0x00])
         val = ((resp[0] << 8) + resp[1]) & 0x3FF
         return val
+
+class LED_light:
+    def __init__(self, pin):
+        self.sw = False
+        self.pin = pin
+        GPIO.setup(self.pin, GPIO.OUT)
+        GPIO.output(self.pin, GPIO.LOW)
+
+    def switch(self):
+        self.sw = not self.sw
+
+        if self.sw:
+            GPIO.output(self.pin, GPIO.LOW)
+        else:
+            GPIO.output(self.pin, GPIO.HIGH)
 
 if __name__ == "__main__":
     main()

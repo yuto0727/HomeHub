@@ -28,8 +28,12 @@ def main():
     if not ir.pi.connected:
         exit(0)
 
+    # ファイル間通信初期化
     global_val = mg.mmap_global_val("global_val.txt")
-    dic = {"ir":[0, 0, 0, 0], "radio":[0, 0, 0, 0], "led":0, "motor":0}
+
+    # motor     -> 0:停止  1:出す 2:しまう
+    # screen_st -> 0: 中間 1:出切 2:巻切
+    dic = {"led":0, "motor":0, "screen_st":0}
     global_val.write_val(dic)
 
     try:
@@ -45,9 +49,7 @@ def main():
                 ir.code = []
                 ir.fetching_code = True
                 i = 0
-                for i in range(50):
-                    if not ir.fetching_code:
-                        break
+                while ir.fetching_code:
                     sleep(0.02)
 
                 key_name = ""
@@ -55,22 +57,41 @@ def main():
                     if ir.compare(val, ir.code[:]):
                         key_name = key
 
-                dic = global_val.read_val()
-
                 if key_name == "firetv:power":
                     # print("press power")
-                    dic["ir"] = [1, 0, 0, 0]
+                    # powerボタン -> スクリーンアップ・ダウン
+                    dic = global_val.read_val()
+
+                    if dic["screen_st"] == 0:
+                        # 中間
+                        if dic["motor"] == 0 or dic["motor"] == 1:
+                            # 中間で停止状態または中間で展開中 -> 収納
+                            dic["motor"] = 2
+                        elif dic["motor"] == 2:
+                            # 中間で収納中 -> 展開
+                            dic["motor"] = 1
+
+                    elif dic["screen_st"] == 1:
+                        # 出切 -> 収納
+                        dic["motor"] = 2
+
+                    elif dic["screen_st"] == 2:
+                        # 巻切 -> 展開
+                        dic["motor"] = 1
+
+                    global_val.write_val(dic)
+
                 elif key_name == "firetv:volume_up":
                     # print("press volume_up")
-                    dic["ir"] = [0, 1, 0, 0]
+                    pass
                 elif key_name == "firetv:volume_down":
                     # print("press volume_down")
-                    dic["ir"] = [0, 0, 1, 0]
+                    pass
                 elif key_name == "firetv:volume_mute":
                     # print("press volume_mute")
-                    dic["ir"] = [0, 0, 0, 1]
+                    pass
                 else:
-                    dic["ir"] = [0, 0, 0, 0]
+                    pass
 
                 global_val.write_val(dic)
 
