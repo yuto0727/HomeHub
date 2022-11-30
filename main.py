@@ -12,6 +12,9 @@ def main():
     motor = Move_Motor(MOTOR_A, MOTOR_B)
     rotation_sensor = AD_Converter()
 
+    g.data_ir = [0, 0, 0, 0]
+    g.data_radio = [0, 0, 0, 0]
+
     try:
         while True:
             print(g.data_ir, g.data_radio)

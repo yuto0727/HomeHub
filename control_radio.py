@@ -2,8 +2,6 @@ from time import sleep
 import RPi.GPIO as GPIO
 import global_val as g
 
-CTRL_PERIOD = 0.02
-
 INPUT_PINS = {}
 INPUT_PINS["REMOTE_A"] = 5
 INPUT_PINS["REMOTE_B"] = 6
@@ -29,5 +27,5 @@ try:
             g.data_radio[3] = 1
 
         sleep(0.1)
-except:
-    pass
+except KeyboardInterrupt:
+    GPIO.cleanup()
