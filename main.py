@@ -1,7 +1,8 @@
 from time import sleep
 import RPi.GPIO as GPIO
 import sys, spidev
-import global_val as g
+import mmap_global_val as mg
+
 
 GPIO.setmode(GPIO.BCM)
 
@@ -11,13 +12,14 @@ MOTOR_B = 21
 def main():
     motor = Move_Motor(MOTOR_A, MOTOR_B)
     rotation_sensor = AD_Converter()
+    global_val = mg.mmap_global_val("global_val.txt")
 
     try:
         while True:
-            print(g.data_ir, g.data_radio)
+            dic = global_val.read_val()
+            print(dic)
             sleep(0.2)
-            g.data_ir = [0, 0, 0, 0]
-            g.data_radio = [0, 0, 0, 0]
+
     except KeyboardInterrupt:
         GPIO.cleanup()
 

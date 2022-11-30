@@ -1,7 +1,7 @@
 import irrp as ir
 from time import sleep
 import pigpio, json
-import global_val as g
+import mmap_global_val as mg
 
 ir.GPIO = 18
 
@@ -28,14 +28,17 @@ def main():
     if not ir.pi.connected:
         exit(0)
 
-    with open('codes_for_control') as f:
-        key_config = json.load(f)
-        ir.pi.set_mode(ir.GPIO, pigpio.INPUT)
-        ir.pi.set_glitch_filter(ir.GPIO, ir.GLITCH)
+    global_val = mg.mmap_global_val("global_val.txt")
+    dic = {"ir":[0, 0, 0, 0], "radio":[0, 0, 0, 0], "led":0, "motor":0}
 
-        cb = ir.pi.callback(ir.GPIO, pigpio.EITHER_EDGE, ir.cbf)
+    try:
+        with open('codes_for_control') as f:
+            key_config = json.load(f)
+            ir.pi.set_mode(ir.GPIO, pigpio.INPUT)
+            ir.pi.set_glitch_filter(ir.GPIO, ir.GLITCH)
 
-        try:
+            cb = ir.pi.callback(ir.GPIO, pigpio.EITHER_EDGE, ir.cbf)
+
             print("reading...")
             while True:
                 ir.code = []
@@ -50,24 +53,25 @@ def main():
                         key_name = key
 
                 if key_name == "firetv:power":
-                    print("press power")
-                    g.data_ir[0] = 1
+                    # print("press power")
+                    dic["ir"][0] = 1
                 elif key_name == "firetv:volume_up":
-                    print("press volume_up")
-                    g.data_ir[1] = 1
+                    # print("press volume_up")
+                    dic["ir"][1] = 1
                 elif key_name == "firetv:volume_down":
-                    print("press volume_down")
-                    g.data_ir[2] = 1
+                    # print("press volume_down")
+                    dic["ir"][2] = 1
                 elif key_name == "firetv:volume_mute":
-                    print("press volume_mute")
-                    g.data_ir[3] = 1
+                    # print("press volume_mute")
+                    dic["ir"][3] = 1
                 else:
-                    pass
+                    dic["ir"] = [0, 0, 0, 0]
 
-        except KeyboardInterrupt:
-            pass
-        finally:
-            ir.pi.stop()
+                global_val.write_val(dic)
+                print(dic["ir"])
+
+    except KeyboardInterrupt:
+        ir.pi.stop()
 
 if __name__ == "__main__":
     main()
