@@ -28,8 +28,8 @@ def main():
         #     led.switch(dic["led"])
         #     sleep(0.2)
 
-        motor.move(speed=20, action="down")
-        sleep(0.5)
+        motor.move(speed=90, action="down")
+        sleep(5)
         motor.move(speed=0, action="stop")
         GPIO.cleanup()
 
@@ -55,10 +55,10 @@ class Move_Motor:
     def move(self, speed, action):
         print(f"direction:{action}, speed:{speed}")
 
-        if action == "up":
+        if action == "down":
             self.pwm_A.ChangeDutyCycle(speed)
             self.pwm_B.ChangeDutyCycle(0)
-        elif action == "down":
+        elif action == "up":
             self.pwm_A.ChangeDutyCycle(0)
             self.pwm_B.ChangeDutyCycle(speed)
         elif action == "stop":
