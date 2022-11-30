@@ -54,18 +54,18 @@ def main():
 
                 if key_name == "firetv:power":
                     # print("press power")
-                    dic["ir"][0] = 1
+                    dic["ir"] = [1, 0, 0, 0]
                 elif key_name == "firetv:volume_up":
                     # print("press volume_up")
-                    dic["ir"][1] = 1
+                    dic["ir"] = [0, 1, 0, 0]
                 elif key_name == "firetv:volume_down":
                     # print("press volume_down")
-                    dic["ir"][2] = 1
+                    dic["ir"] = [0, 0, 1, 0]
                 elif key_name == "firetv:volume_mute":
                     # print("press volume_mute")
-                    dic["ir"][3] = 1
+                    dic["ir"] = [0, 0, 0, 1]
                 else:
-                    dic["ir"] = [0, 0, 0, 0]
+                    pass
 
                 global_val.write_val(dic)
                 print(dic["ir"])
