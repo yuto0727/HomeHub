@@ -93,8 +93,6 @@ def main():
                 else:
                     pass
 
-                global_val.write_val(dic)
-
     except KeyboardInterrupt:
         ir.pi.stop()
 
