@@ -10,28 +10,77 @@ MOTOR_A = 20
 MOTOR_B = 21
 LED = 16
 
+TARGET_CLOSE = 32
+TARGET_OPEN = 1020
+
+MARGIN = 2
+SLOW_DIFF = 80
+MOTOR_POWER_MAX = 100
+MOTOR_POWER_MIN = 20
+
 def main():
     motor = Move_Motor(MOTOR_A, MOTOR_B)
     led = LED_light(LED)
     rotation_sensor = AD_Converter()
+
+    # ファイル間通信初期化
     global_val = mg.mmap_global_val("global_val.txt")
+
+    # motor     -> 0:停止  1:出す 2:しまう
+    # screen_st -> 0: 中間 1:出切 2:巻切
+    dic = {"led":0, "motor":0, "screen_st":2}
+    global_val.write_val(dic)
 
     try:
         while True:
             dic = global_val.read_val()
-            print(dic)
+            enc = rotation_sensor.get_val()
+
+            # screen_st 更新
+            if TARGET_CLOSE-MARGIN <= enc <= TARGET_CLOSE+MARGIN:
+                dic["screen_st"] = 2
+            elif TARGET_OPEN-MARGIN <= enc <= TARGET_OPEN+MARGIN:
+                dic["screen_st"] = 1
+            else:
+                dic["screen_st"] = 0
+
+            # モーター動作
+            if dic["motor"] == 0:
+                motor.move(speed=0, action="stop")
+
+            elif dic["motor"] == 1:
+                if TARGET_OPEN-enc >= SLOW_DIFF:
+                    motor.move(speed=MOTOR_POWER_MAX, action="down")
+                elif TARGET_OPEN-MARGIN <= enc <= TARGET_OPEN+MARGIN:
+                    motor.move(speed=0, action="stop")
+                    dic["motor"] = 0
+                else:
+                    power = max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(TARGET_OPEN-enc))
+                    motor.move(speed=power, action="down")
+
+            elif dic["motor"] == 2:
+                if enc-TARGET_CLOSE >= SLOW_DIFF:
+                    motor.move(speed=MOTOR_POWER_MAX, action="up")
+                elif TARGET_CLOSE-MARGIN <= enc <= TARGET_CLOSE+MARGIN:
+                    motor.move(speed=0, action="stop")
+                    dic["motor"] = 0
+                else:
+                    power = max(MOTOR_POWER_MIN, MOTOR_POWER_MAX-(enc-TARGET_CLOSE))
+                    motor.move(speed=power, action="up")
 
 
             led.switch(dic["led"])
-            sleep(0.2)
+            sleep(0.02)
 
     except KeyboardInterrupt:
+        motor.move(speed=0, action="stop")
         GPIO.cleanup()
 
 
 def _setup():
     motor = Move_Motor(MOTOR_A, MOTOR_B)
     rotation_sensor = AD_Converter()
+    # down: 1020, up: 32
 
     try:
         s = int(input("sec*10: "))
@@ -102,5 +151,5 @@ class LED_light:
             GPIO.output(self.pin, GPIO.LOW)
 
 if __name__ == "__main__":
-    # main()
-    _setup()
+    main()
+    # _setup()
