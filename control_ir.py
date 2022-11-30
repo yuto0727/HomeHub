@@ -25,8 +25,6 @@ def main():
     ir.code = []
     ir.fetching_code = False
 
-    g.data_ir = [0, 0, 0, 0]
-
     if not ir.pi.connected:
         exit(0)
 
