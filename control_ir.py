@@ -30,6 +30,7 @@ def main():
 
     global_val = mg.mmap_global_val("global_val.txt")
     dic = {"ir":[0, 0, 0, 0], "radio":[0, 0, 0, 0], "led":0, "motor":0}
+    global_val.write_val(dic)
 
     try:
         with open('codes_for_control') as f:
@@ -46,11 +47,13 @@ def main():
                 while ir.fetching_code:
                     sleep(0.02)
 
-                sleep(0.5)
+                # sleep(0.5)
 
                 for key, val in key_config.items():
                     if ir.compare(val, ir.code[:]):
                         key_name = key
+
+                dic = global_val.read_val()
 
                 if key_name == "firetv:power":
                     # print("press power")

@@ -16,18 +16,20 @@ def main():
 
     global_val = mg.mmap_global_val("global_val.txt")
     dic = {"ir":[0, 0, 0, 0], "radio":[0, 0, 0, 0], "led":0, "motor":0}
+    global_val.write_val(dic)
 
     try:
         while True:
+            dic = global_val.read_val()
+
             dic["radio"][0] = GPIO.input(INPUT_PINS["REMOTE_A"])
             dic["radio"][1] = GPIO.input(INPUT_PINS["REMOTE_B"])
             dic["radio"][2] = GPIO.input(INPUT_PINS["REMOTE_C"])
             dic["radio"][3] = GPIO.input(INPUT_PINS["REMOTE_D"])
 
             global_val.write_val(dic)
-            print(dic["radio"])
 
-            sleep(0.1)
+            sleep(0.05)
     except KeyboardInterrupt:
         GPIO.cleanup()
 
