@@ -18,29 +18,35 @@ def main():
 
     try:
         while True:
-            s = float(input("sec"))
-            d = input("action")
+            dic = global_val.read_val()
+            print(dic)
 
 
-            # dic = global_val.read_val()
-            # print(dic)
+            led.switch(dic["led"])
+            sleep(0.2)
 
-            motor.move(speed=50, action=d)
-            for i in range(s*10):
-                enc = rotation_sensor.get_val()
-                print(enc)
-                sleep(0.1)
-            motor.move(speed=0, action="stop")
+    except KeyboardInterrupt:
+        GPIO.cleanup()
 
 
-            # led.switch(dic["led"])
-            # sleep(0.2)
+def _setup():
+    motor = Move_Motor(MOTOR_A, MOTOR_B)
+    rotation_sensor = AD_Converter()
 
+    try:
+        s = int(input("sec*10: "))
+        d = input("action: ")
+
+        motor.move(speed=50, action=d)
+        for i in range(s):
+            enc = rotation_sensor.get_val()
+            print(enc)
+            sleep(0.1)
+        motor.move(speed=0, action="stop")
 
     except KeyboardInterrupt:
         motor.move(speed=0, action="stop")
         GPIO.cleanup()
-
 
 
 class Move_Motor:
@@ -96,4 +102,5 @@ class LED_light:
             GPIO.output(self.pin, GPIO.LOW)
 
 if __name__ == "__main__":
-    main()
+    # main()
+    _setup()
