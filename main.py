@@ -28,9 +28,10 @@ def main():
         #     led.switch(dic["led"])
         #     sleep(0.2)
 
-        motor.move(speed=10, action="down")
+        motor.move(speed=20, action="down")
         sleep(0.5)
         motor.move(speed=0, action="stop")
+        GPIO.cleanup()
 
     except KeyboardInterrupt:
         GPIO.cleanup()
