@@ -92,10 +92,10 @@ def main():
                         dic["motor"] = 1
                         dic["led"] = 1
                         global_val.write_val(dic)
-                        
+
                         subprocess.run(CMD_PROJECTOR.split())
                         subprocess.Popen(CMD_light_ON.split())
-                        print(0.08)
+                        sleep(0.08)
                         subprocess.Popen(CMD_light_OFF.split())
 
 
