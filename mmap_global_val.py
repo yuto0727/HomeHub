@@ -47,6 +47,13 @@ class mmap_global_val:
         self.mm.seek(0)
         self.mm.write(repr(dic).encode())
 
+        # 何らかのエラーで書き込みできなかったときは、再帰的に繰り返す
+        if dic == self.read_val():
+            return
+        else:
+            sleep(0.01)
+            self.write_val(dic)
+
     def read_val(self):
         """
         変数を読み込み、辞書型で返します。
