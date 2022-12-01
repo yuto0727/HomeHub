@@ -2,6 +2,7 @@ from time import sleep
 import RPi.GPIO as GPIO
 import sys, spidev
 import mmap_global_val as mg
+import subprocess
 
 
 GPIO.setmode(GPIO.BCM)
@@ -14,14 +15,21 @@ TARGET_CLOSE = 18
 TARGET_OPEN = 1020
 
 MARGIN = 3
-SLOW_DIFF = 150
 MOTOR_POWER_MAX = 100
 MOTOR_POWER_MIN = 25
+SLOW_DIFF = MOTOR_POWER_MAX-MOTOR_POWER_MIN
+
+CONTROL_PROCESS_1 = "python3 /home/yuto/HomeHub/control_radio.py"
+CONTROL_PROCESS_2 = "python3 /home/yuto/HomeHub/control_ir.py"
 
 def main():
     motor = Move_Motor(MOTOR_A, MOTOR_B)
     led = LED_light(LED)
     rotation_sensor = AD_Converter()
+
+    # 外部コントロール用プロセススタート
+    subprocess.Popen(CONTROL_PROCESS_1.split())
+    subprocess.Popen(CONTROL_PROCESS_2.split())
 
     # ファイル間通信初期化
     global_val = mg.mmap_global_val("/home/yuto/HomeHub/global_val.txt")
