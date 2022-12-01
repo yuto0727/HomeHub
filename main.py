@@ -10,8 +10,8 @@ MOTOR_A = 20
 MOTOR_B = 21
 LED = 16
 
-TARGET_CLOSE = 16
-TARGET_OPEN = 1018
+TARGET_CLOSE = 18
+TARGET_OPEN = 1020
 
 MARGIN = 2
 SLOW_DIFF = 150
@@ -53,7 +53,7 @@ def main():
             elif dic["motor"] == 1:
                 if TARGET_OPEN-enc >= SLOW_DIFF:
                     motor.move(speed=MOTOR_POWER_MAX, action="down")
-                elif TARGET_OPEN-MARGIN <= enc <= TARGET_OPEN+MARGIN:
+                elif TARGET_OPEN <= enc:
                     motor.move(speed=0, action="stop")
                     dic["motor"] = 0
                 else:
@@ -63,7 +63,7 @@ def main():
             elif dic["motor"] == 2:
                 if enc-TARGET_CLOSE >= SLOW_DIFF:
                     motor.move(speed=MOTOR_POWER_MAX, action="up")
-                elif TARGET_CLOSE-MARGIN <= enc <= TARGET_CLOSE+MARGIN:
+                elif enc <= TARGET_CLOSE:
                     motor.move(speed=0, action="stop")
                     dic["motor"] = 0
                 else:

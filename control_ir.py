@@ -93,10 +93,10 @@ def main():
                         dic["led"] = 1
                         global_val.write_val(dic)
 
-                        subprocess.run(CMD_PROJECTOR.split())
                         subprocess.Popen(CMD_light_ON.split())
                         sleep(0.08)
-                        subprocess.Popen(CMD_light_OFF.split())
+                        subprocess.run(CMD_light_OFF.split())
+                        subprocess.run(CMD_PROJECTOR.split())
 
 
                 elif key_name == "firetv:volume_up":
