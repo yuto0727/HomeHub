@@ -71,7 +71,7 @@ def main():
             elif GPIO.input(INPUT_PINS["REMOTE_C"]) and not prev_status["REMOTE_C"]:
                 # Cボタン -> プロジェクター電源
                 print("C")
-                subprocess.Popen(CMD_PROJECTOR)
+                subprocess.Popen(CMD_PROJECTOR.split())
 
             elif GPIO.input(INPUT_PINS["REMOTE_D"]) and not prev_status["REMOTE_D"]:
                 # Dボタン -> LEDライト電源
