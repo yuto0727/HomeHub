@@ -53,8 +53,9 @@ class mmap_global_val:
 
         if dic == dic_now:
             print(" -> write OK")
-            return
+            return True
         else:
+            print(" -> Error")
             self.write_val(dic)
 
     def read_val(self):
