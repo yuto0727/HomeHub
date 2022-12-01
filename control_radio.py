@@ -9,7 +9,7 @@ INPUT_PINS["REMOTE_B"] = 26
 INPUT_PINS["REMOTE_C"] = 5
 INPUT_PINS["REMOTE_D"] = 19
 
-CMD_PROJECTOR = "python3 irrp.py -p -g17 -f codes_for_devices projector"
+CMD_PROJECTOR = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices projector"
 
 def main():
     GPIO.setmode(GPIO.BCM)
@@ -18,7 +18,7 @@ def main():
         GPIO.setup(INPUT_PINS[j], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     # ファイル間通信初期化
-    global_val = mg.mmap_global_val("global_val.txt")
+    global_val = mg.mmap_global_val("/home/yuto/HomeHub/global_val.txt")
 
     # motor     -> 0:停止  1:出す 2:しまう
     # screen_st -> 0: 中間 1:出切 2:巻切

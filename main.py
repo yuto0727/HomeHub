@@ -24,7 +24,7 @@ def main():
     rotation_sensor = AD_Converter()
 
     # ファイル間通信初期化
-    global_val = mg.mmap_global_val("global_val.txt")
+    global_val = mg.mmap_global_val("/home/yuto/HomeHub/global_val.txt")
 
     # motor     -> 0:停止  1:出す 2:しまう
     # screen_st -> 0: 中間 1:出切 2:巻切

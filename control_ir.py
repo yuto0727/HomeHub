@@ -18,9 +18,9 @@ ir.PRE_US = ir.PRE_MS * 1000
 ir.TOLER_MIN = (100 - ir.TOLERANCE) / 100.0
 ir.TOLER_MAX = (100 + ir.TOLERANCE) / 100.0
 
-CMD_PROJECTOR = "python3 irrp.py -p -g17 -f codes_for_devices projector"
-CMD_light_ON = "python3 irrp.py -p -g17 -f codes_for_devices light:on"
-CMD_light_OFF = "python3 irrp.py -p -g17 -f codes_for_devices light:off"
+CMD_PROJECTOR = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices projector"
+CMD_light_ON = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices light:on"
+CMD_light_OFF = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices light:off"
 
 
 def main():
@@ -34,7 +34,7 @@ def main():
         exit(0)
 
     # ファイル間通信初期化
-    global_val = mg.mmap_global_val("global_val.txt")
+    global_val = mg.mmap_global_val("/home/yuto/HomeHub/global_val.txt")
 
     # motor     -> 0:停止  1:出す 2:しまう
     # screen_st -> 0: 中間 1:出切 2:巻切
