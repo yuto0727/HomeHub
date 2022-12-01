@@ -13,7 +13,7 @@ LED = 16
 TARGET_CLOSE = 18
 TARGET_OPEN = 1020
 
-MARGIN = 2
+MARGIN = 3
 SLOW_DIFF = 150
 MOTOR_POWER_MAX = 100
 MOTOR_POWER_MIN = 25
@@ -39,9 +39,9 @@ def main():
 
 
             # screen_st 更新
-            if TARGET_CLOSE-MARGIN <= enc <= TARGET_CLOSE+MARGIN:
+            if enc <= TARGET_CLOSE+MARGIN:
                 dic["screen_st"] = 2
-            elif TARGET_OPEN-MARGIN <= enc <= TARGET_OPEN+MARGIN:
+            elif TARGET_OPEN-MARGIN <= enc:
                 dic["screen_st"] = 1
             else:
                 dic["screen_st"] = 0
