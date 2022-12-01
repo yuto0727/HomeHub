@@ -24,7 +24,7 @@ class mmap_global_val:
 
     def write_val(self, dic):
         """
-        dic: 書き込む辞書
+        dic: 書き込む辞書型変数
 
         変数を書き込みます。
         初回実行時に、__init__で指定した同期ファイルが読み込まれます。
