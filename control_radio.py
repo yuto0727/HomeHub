@@ -48,7 +48,9 @@ def main():
                     # 巻切 -> 展開
                     dic["motor"] = 1
 
-                global_val.write_val(dic)
+                loop = False
+                while not loop:
+                    loop = global_val.write_val(dic)
 
                 # チャタリング防止
                 sleep(2)
@@ -58,7 +60,10 @@ def main():
                 print("B")
                 dic = global_val.read_val()
                 dic["motor"] = 0
-                global_val.write_val(dic)
+
+                loop = False
+                while not loop:
+                    loop = global_val.write_val(dic)
 
             elif GPIO.input(INPUT_PINS["REMOTE_C"]) and not prev_status["REMOTE_C"]:
                 # Cボタン -> プロジェクター電源
@@ -73,7 +78,10 @@ def main():
                     dic["led"] = 0
                 else:
                     dic["led"] = 1
-                global_val.write_val(dic)
+
+                loop = False
+                while not loop:
+                    loop = global_val.write_val(dic)
 
             for i in input_pin_names:
                 prev_status[i] = GPIO.input(INPUT_PINS[i])

@@ -56,7 +56,7 @@ class mmap_global_val:
             return True
         else:
             print(" -> Error")
-            self.write_val(dic)
+            return False
 
     def read_val(self):
         """
