@@ -48,7 +48,10 @@ class mmap_global_val:
         self.mm.write(repr(dic).encode())
 
         # 何らかのエラーで書き込みできなかったときは、再帰的に繰り返す
-        if dic == self.read_val():
+        dic_now = self.read_val()
+        print(dic_now)
+        if dic == dic_now:
+            print("write OK\n")
             return
         else:
             sleep(0.01)
