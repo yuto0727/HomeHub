@@ -80,18 +80,18 @@ def main():
                         # 出切 -> 収納
                         dic["motor"] = 2
                         dic["led"] = 0
-                        subprocess.run(CMD_PROJECTOR)
-                        subprocess.run(CMD_PROJECTOR)
-                        subprocess.run(CMD_light_ON)
+                        subprocess.run(CMD_PROJECTOR.split())
+                        subprocess.run(CMD_PROJECTOR.split())
+                        subprocess.run(CMD_light_ON.split())
 
                     elif dic["screen_st"] == 2:
                         # 巻切 -> 展開
                         dic["motor"] = 1
                         dic["led"] = 1
-                        subprocess.run(CMD_PROJECTOR)
-                        subprocess.Popen(CMD_light_ON)
+                        subprocess.run(CMD_PROJECTOR.split())
+                        subprocess.Popen(CMD_light_ON.split())
                         print(0.08)
-                        subprocess.Popen(CMD_light_OFF)
+                        subprocess.Popen(CMD_light_OFF.split())
 
 
                     global_val.write_val(dic)
