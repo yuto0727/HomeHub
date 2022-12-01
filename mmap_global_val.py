@@ -43,19 +43,19 @@ class mmap_global_val:
                 self._make_file(dic)
                 self._file_open()
 
-        print("write data -> ", repr(dic).encode())
+        print("write data -> ", repr(dic).encode(), end="")
         self.mm.seek(0)
         self.mm.write(repr(dic).encode())
 
         # 何らかのエラーで書き込みできなかったときは、再帰的に繰り返す
-        # dic_now = self.read_val()
-        # print(dic_now)
-        # if dic == dic_now:
-        #     print("write OK\n")
-        #     return
-        # else:
-        #     sleep(0.01)
-        #     self.write_val(dic)
+        sleep(0.01)
+        dic_now = self.read_val()
+
+        if dic == dic_now:
+            print(" -> write OK")
+            return
+        else:
+            self.write_val(dic)
 
     def read_val(self):
         """
