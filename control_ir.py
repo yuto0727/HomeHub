@@ -79,23 +79,36 @@ def main():
 
                     elif dic["screen_st"] == 1:
                         # 出切 -> 収納
+
+                        # モーター回転、間接照明消灯
                         dic["motor"] = 2
                         dic["led"] = 0
                         global_val.write_val(dic)
 
+                        # プロジェクターOFF
                         subprocess.run(CMD_PROJECTOR.split())
                         subprocess.run(CMD_PROJECTOR.split())
+
+                        # シーリングライト点灯
                         subprocess.run(CMD_light_ON.split())
 
                     elif dic["screen_st"] == 2:
                         # 巻切 -> 展開
+
+                        # モーター回転
                         dic["motor"] = 1
-                        dic["led"] = 1
                         global_val.write_val(dic)
 
+                        # シーリングライト消灯
                         subprocess.Popen(CMD_light_ON.split())
                         sleep(0.08)
                         subprocess.run(CMD_light_OFF.split())
+
+                        # 間接照明点灯
+                        dic["led"] = 1
+                        global_val.write_val(dic)
+
+                        # プロジェクターON
                         subprocess.run(CMD_PROJECTOR.split())
 
 
