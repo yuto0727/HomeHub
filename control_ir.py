@@ -2,6 +2,7 @@ import irrp as ir
 from time import sleep
 import pigpio, json
 import mmap_global_val as mg
+import subprocess
 
 ir.GPIO = 18
 
@@ -16,6 +17,10 @@ ir.POST_US = ir.POST_MS * 1000
 ir.PRE_US = ir.PRE_MS * 1000
 ir.TOLER_MIN = (100 - ir.TOLERANCE) / 100.0
 ir.TOLER_MAX = (100 + ir.TOLERANCE) / 100.0
+
+CMD_PROJECTOR = "python3 irrp.py -p -g17 -f codes_for_devices projector"
+CMD_light_ON = "python3 irrp.py -p -g17 -f codes_for_devices light:on"
+CMD_light_OFF = "python3 irrp.py -p -g17 -f codes_for_devices light:off"
 
 
 def main():
@@ -74,10 +79,20 @@ def main():
                     elif dic["screen_st"] == 1:
                         # 出切 -> 収納
                         dic["motor"] = 2
+                        dic["led"] = 0
+                        subprocess.run(CMD_PROJECTOR)
+                        subprocess.run(CMD_PROJECTOR)
+                        subprocess.run(CMD_light_ON)
 
                     elif dic["screen_st"] == 2:
                         # 巻切 -> 展開
                         dic["motor"] = 1
+                        dic["led"] = 1
+                        subprocess.run(CMD_PROJECTOR)
+                        subprocess.Popen(CMD_light_ON)
+                        print(0.08)
+                        subprocess.Popen(CMD_light_OFF)
+
 
                     global_val.write_val(dic)
 

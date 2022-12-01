@@ -1,12 +1,15 @@
 from time import sleep
 import RPi.GPIO as GPIO
 import mmap_global_val as mg
+import subprocess
 
 INPUT_PINS = {}
 INPUT_PINS["REMOTE_A"] = 6
 INPUT_PINS["REMOTE_B"] = 26
 INPUT_PINS["REMOTE_C"] = 5
 INPUT_PINS["REMOTE_D"] = 19
+
+CMD_PROJECTOR = "python3 irrp.py -p -g17 -f codes_for_devices projector"
 
 def main():
     GPIO.setmode(GPIO.BCM)
@@ -68,7 +71,7 @@ def main():
             elif GPIO.input(INPUT_PINS["REMOTE_C"]) and not prev_status["REMOTE_C"]:
                 # Cボタン -> プロジェクター電源
                 print("C")
-                pass
+                subprocess.Popen(CMD_PROJECTOR)
 
             elif GPIO.input(INPUT_PINS["REMOTE_D"]) and not prev_status["REMOTE_D"]:
                 # Dボタン -> LEDライト電源
