@@ -87,6 +87,7 @@ def main():
 
                         # プロジェクターOFF
                         subprocess.run(CMD_PROJECTOR.split())
+                        sleep(1)
                         subprocess.run(CMD_PROJECTOR.split())
 
                         # シーリングライト点灯
@@ -103,6 +104,8 @@ def main():
                         subprocess.Popen(CMD_light_ON.split())
                         sleep(0.08)
                         subprocess.run(CMD_light_OFF.split())
+
+                        sleep(1)
 
                         # 間接照明点灯
                         dic["led"] = 1
