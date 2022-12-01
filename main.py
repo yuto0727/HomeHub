@@ -70,7 +70,10 @@ def main():
                     power = min(max(MOTOR_POWER_MIN, enc-TARGET_CLOSE), 100)
                     motor.move(speed=power, action="up")
 
+            # 上記処理中のledの値の更新を取り込む
+            dic["led"] = global_val.read_val()["led"]
             global_val.write_val(dic)
+
             led.switch(dic["led"])
             sleep(0.02)
 
