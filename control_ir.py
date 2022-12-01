@@ -75,11 +75,14 @@ def main():
                         elif dic["motor"] == 2:
                             # 中間で収納中 -> 展開
                             dic["motor"] = 1
+                        global_val.write_val(dic)
 
                     elif dic["screen_st"] == 1:
                         # 出切 -> 収納
                         dic["motor"] = 2
                         dic["led"] = 0
+                        global_val.write_val(dic)
+
                         subprocess.run(CMD_PROJECTOR.split())
                         subprocess.run(CMD_PROJECTOR.split())
                         subprocess.run(CMD_light_ON.split())
@@ -88,13 +91,13 @@ def main():
                         # 巻切 -> 展開
                         dic["motor"] = 1
                         dic["led"] = 1
+                        global_val.write_val(dic)
+                        
                         subprocess.run(CMD_PROJECTOR.split())
                         subprocess.Popen(CMD_light_ON.split())
                         print(0.08)
                         subprocess.Popen(CMD_light_OFF.split())
 
-
-                    global_val.write_val(dic)
 
                 elif key_name == "firetv:volume_up":
                     # print("press volume_up")
