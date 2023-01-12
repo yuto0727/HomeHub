@@ -52,7 +52,7 @@ is_downward_possible = False
 Run = True
 
 def main():
-    global enable_ir_control, status_light, status_motor
+    global enable_ir_control, status_light, status_motor, Run
 
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
