@@ -51,11 +51,6 @@ is_downward_possible = False
 # プロセス停止用変数
 Run = True
 
-# 制御インスタンス作成
-motor = Move_Motor(MOTOR_A, MOTOR_B)
-led = LED_light(LED)
-rotation_sensor = AD_Converter()
-
 def main():
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
@@ -239,6 +234,11 @@ def _dev():
         motor.move(speed=0, action="stop")
         GPIO.cleanup()
 
+
+# 制御インスタンス作成
+motor = Move_Motor(MOTOR_A, MOTOR_B)
+led = LED_light(LED)
+rotation_sensor = AD_Converter()
 if __name__ == "__main__":
     main()
     # _dev()
