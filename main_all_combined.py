@@ -126,7 +126,9 @@ def main():
 
 def sub1():
     global status_motor, is_downward_possible, is_upward_possible
+    print("sub1 start")
     while Run:
+        print(status_motor)
         enc = rotation_sensor.get_val()
 
         # モーター動作終了判定
