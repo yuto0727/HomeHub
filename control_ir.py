@@ -1,22 +1,22 @@
-import irrp as ir
+import irrp
 from time import sleep
 import pigpio, json
 import mmap_global_val as mg
 import subprocess
 
-ir.GPIO = 18
+irrp.GPIO = 18
 
-ir.GLITCH = 100
-ir.PRE_MS = 200
-ir.POST_MS = 15
-ir.VERBOSE = False
-ir.SHORT = 10
-ir.TOLERANCE = 15
+irrp.GLITCH = 100
+irrp.PRE_MS = 200
+irrp.POST_MS = 15
+irrp.VERBOSE = False
+irrp.SHORT = 10
+irrp.TOLERANCE = 15
 
-ir.POST_US = ir.POST_MS * 1000
-ir.PRE_US = ir.PRE_MS * 1000
-ir.TOLER_MIN = (100 - ir.TOLERANCE) / 100.0
-ir.TOLER_MAX = (100 + ir.TOLERANCE) / 100.0
+irrp.POST_US = irrp.POST_MS * 1000
+irrp.PRE_US = irrp.PRE_MS * 1000
+irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
+irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
 
 CMD_PROJECTOR = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices projector"
 CMD_light_ON = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices light:on"
@@ -24,13 +24,13 @@ CMD_light_OFF = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHu
 
 
 def main():
-    ir.pi = pigpio.pi()
-    ir.last_tick = 0
-    ir.in_code = False
-    ir.code = []
-    ir.fetching_code = False
+    irrp.pi = pigpio.pi()
+    irrp.last_tick = 0
+    irrp.in_code = False
+    irrp.code = []
+    irrp.fetching_code = False
 
-    if not ir.pi.connected:
+    if not irrp.pi.connected:
         exit(0)
 
     # ファイル間通信初期化
@@ -44,22 +44,22 @@ def main():
     try:
         with open('codes_for_control') as f:
             key_config = json.load(f)
-            ir.pi.set_mode(ir.GPIO, pigpio.INPUT)
-            ir.pi.set_glitch_filter(ir.GPIO, ir.GLITCH)
+            irrp.pi.set_mode(irrp.GPIO, pigpio.INPUT)
+            irrp.pi.set_glitch_filter(irrp.GPIO, irrp.GLITCH)
 
-            cb = ir.pi.callback(ir.GPIO, pigpio.EITHER_EDGE, ir.cbf)
+            cb = irrp.pi.callback(irrp.GPIO, pigpio.EITHER_EDGE, irrp.cbf)
 
             print("reading...")
             while True:
-                ir.code = []
-                ir.fetching_code = True
+                irrp.code = []
+                irrp.fetching_code = True
                 i = 0
-                while ir.fetching_code:
+                while irrp.fetching_code:
                     sleep(0.02)
 
                 key_name = ""
                 for key, val in key_config.items():
-                    if ir.compare(val, ir.code[:]):
+                    if irrp.compare(val, irrp.code[:]):
                         key_name = key
 
                 if key_name == "firetv:power":
@@ -128,7 +128,7 @@ def main():
                     pass
 
     except KeyboardInterrupt:
-        ir.pi.stop()
+        irrp.pi.stop()
 
 if __name__ == "__main__":
     main()
