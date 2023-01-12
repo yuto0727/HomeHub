@@ -123,6 +123,7 @@ def main():
         GPIO.cleanup()
 
 def sub1():
+    global status_motor
     while Run:
         enc = rotation_sensor.get_val()
 
