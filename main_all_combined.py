@@ -118,6 +118,8 @@ def main():
                 else:
                     pass
 
+                print("\r                 ", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
+
     except KeyboardInterrupt:
         Run = False
         irrp.pi.stop()
@@ -128,7 +130,7 @@ def sub1():
     global status_motor, is_downward_possible, is_upward_possible
     print("sub1 start")
     while Run:
-        print("\r", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
+        # print("\r                 ", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
         enc = rotation_sensor.get_val()
 
         # モーター動作終了判定
