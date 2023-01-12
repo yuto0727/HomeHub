@@ -52,6 +52,8 @@ is_downward_possible = False
 Run = True
 
 def main():
+    global enable_ir_control, status_light, status_motor
+
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
     irrp.pi.set_mode(irrp.GPIO, pigpio.INPUT)
@@ -123,13 +125,20 @@ def main():
         GPIO.cleanup()
 
 def sub1():
-    global status_motor
+    global status_motor, is_downward_possible, is_upward_possible
     while Run:
         enc = rotation_sensor.get_val()
 
         # モーター動作終了判定
         if status_motor != "stop" and (enc <= TARGET_CLOSE+MARGIN or TARGET_OPEN-MARGIN <= enc):
             status_motor = "stop"
+
+        if enc <= TARGET_CLOSE+MARGIN:
+            is_downward_possible = True
+            is_upward_possible = False
+        elif TARGET_OPEN-MARGIN <= enc:
+            is_downward_possible = False
+            is_upward_possible = True
 
         # モーター動作分岐
         if status_motor == "stop":
