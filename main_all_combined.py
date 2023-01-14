@@ -97,27 +97,32 @@ def main():
                         key_name = key
 
                 # 照合結果によって分岐
+                # powerボタン -> LEDライト点灯・消灯 & IR制御有効化・無効化
                 if key_name == "firetv:power":
                     print("press power")
-                    # powerボタン -> LEDライト点灯・消灯 & IR制御有効化・無効化
                     status_light = not status_light
                     enable_ir_control = not enable_ir_control
 
                     # LED切り替え
                     led.switch(status_light)
 
+                # volume_upボタン -> モーターup & 下降可能フラグたてる
                 elif key_name == "firetv:volume_up" and enable_ir_control:
                     print("press volume_up")
                     if is_upward_possible:
                         print("change status up")
+                        is_downward_possible = True
                         status_motor = "up"
 
+                # volume_downボタン -> モーターdown & 上昇可能フラグたてる
                 elif key_name == "firetv:volume_down" and enable_ir_control:
                     print("press volume_down")
                     if is_downward_possible:
                         print("change status down")
+                        is_upward_possible = True
                         status_motor = "down"
 
+                # volume_muteボタン -> モーター停止
                 elif key_name == "firetv:volume_mute":
                     print("press volume_mute")
                     # muteボタン -> 無条件モーター停止
@@ -141,15 +146,21 @@ def sub1():
         # print("\r", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
 
         # モーター動作終了判定
-        if status_motor != "stop" and (enc <= TARGET_CLOSE+MARGIN or TARGET_OPEN-MARGIN <= enc):
-            status_motor = "stop"
+        if is_upward_possible and is_downward_possible:
 
-        if enc <= TARGET_CLOSE+MARGIN:
-            is_downward_possible = True
-            is_upward_possible = False
-        elif TARGET_OPEN-MARGIN <= enc:
-            is_downward_possible = False
-            is_upward_possible = True
+            # スクリーンが閉じきった場合
+            if enc <= TARGET_CLOSE+MARGIN:
+                motor.stop()
+                status_motor = "stop"
+                is_downward_possible = True
+                is_upward_possible = False
+
+            # スクリーンが開ききった状態の場合
+            elif TARGET_OPEN-MARGIN <= enc:
+                motor.stop()
+                status_motor = "stop"
+                is_downward_possible = False
+                is_upward_possible = True
 
         # モーター動作分岐
         if status_motor == "stop":
