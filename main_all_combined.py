@@ -71,6 +71,10 @@ def main():
     set_init_status()
     Thread(target=sub1).start()
 
+    led.switch(True)
+    sleep(0.25)
+    led.switch(False)
+
     try:
         with open('codes_for_control') as f:
             key_config = json.load(f)
