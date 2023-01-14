@@ -88,6 +88,7 @@ def main():
                 while irrp.fetching_code:
                     dev_ += 1
                     sleep(0.02)
+                dev_ += 10000
 
                 # 読み取り結果を照合
                 key_name = ""
