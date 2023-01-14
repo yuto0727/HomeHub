@@ -143,12 +143,10 @@ def sub1():
 
         if t == 100:
             # print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ", end="")
-            print(f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ")
+            # print(f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ")
             t = 0
         else:
             t += 1
-
-        i = enc
 
 
         # モーター動作分岐
@@ -167,6 +165,8 @@ def sub1():
                     is_downward_possible = True
                     is_upward_possible = False
 
+                    print(f"stop prev: {i}, now: {enc} def: {enc-i}")
+
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
                 power = min(max(MOTOR_POWER_MIN, enc-TARGET_CLOSE), 100)
@@ -184,10 +184,14 @@ def sub1():
                     is_downward_possible = False
                     is_upward_possible = True
 
+                    print(f"stop {enc-i}")
+
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
                 power = min(max(MOTOR_POWER_MIN, TARGET_OPEN-enc), 100)
                 motor.move(speed=power, action="down")
+
+        i = enc
 
 
 class Move_Motor:
