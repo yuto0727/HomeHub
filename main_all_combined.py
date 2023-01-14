@@ -44,15 +44,17 @@ CMD_light_OFF = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHu
 # デバイス制御変数
 enable_ir_control = False
 status_light = False
-status_motor = "stop"
+status_motor = "none"
 is_upward_possible = False
 is_downward_possible = False
+
+dev_ = 0
 
 # プロセス停止用変数
 Run = True
 
 def main():
-    global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible
+    global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible, dev_
 
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
@@ -68,7 +70,9 @@ def main():
     irrp.code = []
     irrp.fetching_code = False
 
+
     Thread(target=sub1).start()
+    Thread(target=sub2).start()
 
     try:
         with open('codes_for_control') as f:
@@ -82,6 +86,7 @@ def main():
 
                 # 読み取り待ち
                 while irrp.fetching_code:
+                    dev_ += 1
                     sleep(0.02)
 
                 # 読み取り結果を照合
@@ -169,6 +174,11 @@ def sub1():
                 power = min(max(MOTOR_POWER_MIN, TARGET_OPEN-enc), 100)
                 motor.move(speed=power, action="down")
 
+def sub2():
+    global dev_
+    while Run:
+        print(dev_)
+        sleep(1)
 
 
 class Move_Motor:
