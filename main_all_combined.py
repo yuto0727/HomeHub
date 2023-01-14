@@ -52,7 +52,7 @@ is_downward_possible = False
 Run = True
 
 def main():
-    global enable_ir_control, status_light, status_motor, Run
+    global status_motor, enable_ir_control, status_light, Run
 
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
@@ -103,11 +103,13 @@ def main():
                 elif key_name == "firetv:volume_up" and enable_ir_control:
                     print("press volume_up")
                     if is_upward_possible:
+                        print("change status up")
                         status_motor = "up"
 
                 elif key_name == "firetv:volume_down" and enable_ir_control:
                     print("press volume_down")
                     if is_downward_possible:
+                        print("change status down")
                         status_motor = "down"
 
                 elif key_name == "firetv:volume_mute":
@@ -118,8 +120,6 @@ def main():
                 else:
                     pass
 
-                print("\r                 ", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
-
     except KeyboardInterrupt:
         Run = False
         irrp.pi.stop()
@@ -127,11 +127,12 @@ def main():
         GPIO.cleanup()
 
 def sub1():
-    global status_motor, is_downward_possible, is_upward_possible
+    global status_motor, enable_ir_control, status_light, Run
     print("sub1 start")
     while Run:
-        # print("\r                 ", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
         enc = rotation_sensor.get_val()
+
+        print("\r", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
 
         # モーター動作終了判定
         if status_motor != "stop" and (enc <= TARGET_CLOSE+MARGIN or TARGET_OPEN-MARGIN <= enc):
