@@ -155,8 +155,8 @@ def sub1():
             elif enc <= TARGET_CLOSE:
                     motor.stop()
                     status_motor = "stop"
-                    is_downward_possible = False
-                    is_upward_possible = True
+                    is_downward_possible = True
+                    is_upward_possible = False
 
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
@@ -172,8 +172,8 @@ def sub1():
             elif TARGET_OPEN <= enc:
                     motor.stop()
                     status_motor = "stop"
-                    is_downward_possible = True
-                    is_upward_possible = False
+                    is_downward_possible = False
+                    is_upward_possible = True
 
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
