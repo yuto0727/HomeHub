@@ -68,7 +68,7 @@ def main():
     irrp.code = []
     irrp.fetching_code = False
 
-
+    set_init_status()
     Thread(target=sub1).start()
 
     try:
