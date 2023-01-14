@@ -146,7 +146,7 @@ def sub1():
             print(f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ")
             t = 0
         else:
-            t += 0
+            t += 1
 
         i = enc
 
