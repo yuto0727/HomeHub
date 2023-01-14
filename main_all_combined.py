@@ -136,7 +136,8 @@ def sub1():
     while Run:
         enc = rotation_sensor.get_val()
 
-        print("\r", status_motor, is_downward_possible, is_upward_possible, enc, "      ", end="")
+        # print("\r", status_motor, is_downward_possible, is_upward_possible, enc, "      ", end="")
+        print(enc)
 
         # モーター動作終了判定
         if is_upward_possible and is_downward_possible:
