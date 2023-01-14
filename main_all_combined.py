@@ -94,7 +94,7 @@ def main():
                 # 照合結果によって分岐
                 # powerボタン -> LEDライト点灯・消灯 & IR制御有効化・無効化
                 if key_name == "firetv:power":
-                    print("press power")
+                    # print("press power")
                     status_light = not status_light
                     enable_ir_control = not enable_ir_control
 
@@ -103,23 +103,23 @@ def main():
 
                 # volume_upボタン -> モーターup & 下降可能フラグたてる
                 elif key_name == "firetv:volume_up" and enable_ir_control:
-                    print("press volume_up")
+                    # print("press volume_up")
                     if is_upward_possible:
-                        print("change status up")
+                        # print("change status up")
                         status_motor = "up"
                         is_downward_possible = True
 
                 # volume_downボタン -> モーターdown & 上昇可能フラグたてる
                 elif key_name == "firetv:volume_down" and enable_ir_control:
-                    print("press volume_down")
+                    # print("press volume_down")
                     if is_downward_possible:
-                        print("change status down")
+                        # print("change status down")
                         status_motor = "down"
                         is_upward_possible = True
 
                 # volume_muteボタン -> モーター停止
                 elif key_name == "firetv:volume_mute":
-                    print("press volume_mute")
+                    # print("press volume_mute")
                     # muteボタン -> 無条件モーター停止
                     status_motor = "stop"
 
@@ -135,11 +135,12 @@ def main():
 def sub1():
     global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible
     print("sub1 start")
-    i = "none"
+    i = 0
     while Run:
         enc = rotation_sensor.get_val()
 
-        print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {i}", end="")
+        print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}", end="")
+        i = enc
 
 
         # モーター動作分岐
