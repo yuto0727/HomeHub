@@ -44,11 +44,9 @@ CMD_light_OFF = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHu
 # デバイス制御変数
 enable_ir_control = False
 status_light = False
-status_motor = "none"
+status_motor = "stop"
 is_upward_possible = False
 is_downward_possible = False
-
-dev_ = 0
 
 # プロセス停止用変数
 Run = True
@@ -72,7 +70,6 @@ def main():
 
 
     Thread(target=sub1).start()
-    Thread(target=sub2).start()
 
     try:
         with open('codes_for_control') as f:
@@ -185,12 +182,6 @@ def sub1():
             else:
                 power = min(max(MOTOR_POWER_MIN, TARGET_OPEN-enc), 100)
                 motor.move(speed=power, action="down")
-
-def sub2():
-    global status_motor
-    while Run:
-        print(status_motor)
-        sleep(1)
 
 
 class Move_Motor:
