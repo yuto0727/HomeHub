@@ -138,13 +138,14 @@ def sub1():
     while Run:
         enc = rotation_sensor.get_val()
 
-        # print("\r", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
+        print("\r", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
 
         # モーター動作終了判定
         if is_upward_possible and is_downward_possible:
 
             # スクリーンが閉じきった場合
             if enc <= TARGET_CLOSE+MARGIN:
+                print("a")
                 motor.stop()
                 status_motor = "stop"
                 is_downward_possible = True
@@ -152,6 +153,7 @@ def sub1():
 
             # スクリーンが開ききった状態の場合
             elif TARGET_OPEN-MARGIN <= enc:
+                print("b")
                 motor.stop()
                 status_motor = "stop"
                 is_downward_possible = False
