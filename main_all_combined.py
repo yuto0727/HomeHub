@@ -16,7 +16,7 @@ irrp.GPIO = 18
 
 # ロータリーエンコーダしきい値設定
 TARGET_CLOSE = 18
-TARGET_OPEN = 1020
+TARGET_OPEN = 1023
 
 # スクリーン巻き上げ判定定数設定
 MARGIN = 3
