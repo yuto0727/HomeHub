@@ -135,11 +135,12 @@ def main():
 def sub1():
     global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible
     print("sub1 start")
+    sleep(2)
     i = 0
     while Run:
         enc = rotation_sensor.get_val()
 
-        print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}", end="")
+        print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ", end="")
         i = enc
 
 
