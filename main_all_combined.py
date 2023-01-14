@@ -41,6 +41,8 @@ CMD_PROJECTOR = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHu
 CMD_light_ON = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices light:on"
 CMD_light_OFF = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices light:off"
 
+PATH_IR = "/home/yuto/HomeHub/codes_for_control"
+
 # デバイス制御変数
 enable_ir_control = False
 status_light = False
@@ -76,7 +78,7 @@ def main():
     led.switch(False)
 
     try:
-        with open('codes_for_control') as f:
+        with open(PATH_IR) as f:
             key_config = json.load(f)
             print("reading...")
 
