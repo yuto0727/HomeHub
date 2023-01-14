@@ -106,7 +106,6 @@ def main():
                     print("press volume_up")
                     if is_upward_possible:
                         print("change status up")
-                        is_downward_possible = True
                         status_motor = "up"
 
                 # volume_downボタン -> モーターdown & 上昇可能フラグたてる
@@ -114,7 +113,6 @@ def main():
                     print("press volume_down")
                     if is_downward_possible:
                         print("change status down")
-                        is_upward_possible = True
                         status_motor = "down"
 
                 # volume_muteボタン -> モーター停止
@@ -158,6 +156,10 @@ def sub1():
                 status_motor = "stop"
                 is_downward_possible = False
                 is_upward_possible = True
+
+        elif TARGET_CLOSE+MARGIN < enc < TARGET_OPEN-MARGIN:
+            is_downward_possible = True
+            is_upward_possible = True
 
         # モーター動作分岐
         if status_motor == "stop":
