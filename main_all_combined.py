@@ -137,11 +137,17 @@ def sub1():
     print("sub1 start")
     sleep(2)
     i = 0
+    t = 0
     while Run:
         enc = rotation_sensor.get_val()
 
-        # print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ", end="")
-        print(f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ")
+        if t == 100:
+            # print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ", end="")
+            print(f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ")
+            t = 0
+        else:
+            t += 0
+
         i = enc
 
 
