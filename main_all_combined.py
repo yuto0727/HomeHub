@@ -138,7 +138,7 @@ def sub1():
     while Run:
         enc = rotation_sensor.get_val()
 
-        print("\r", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
+        # print("\r", status_motor, is_downward_possible, is_upward_possible, "      ", end="")
 
         # モーター動作終了判定
         if status_motor != "stop" and (enc <= TARGET_CLOSE+MARGIN or TARGET_OPEN-MARGIN <= enc):
@@ -176,9 +176,9 @@ def sub1():
                 motor.move(speed=power, action="down")
 
 def sub2():
-    global dev_
+    global status_motor
     while Run:
-        print(dev_)
+        print(status_motor)
         sleep(1)
 
 
