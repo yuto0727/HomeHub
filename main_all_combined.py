@@ -140,6 +140,8 @@ def sub1():
     t = 0
     while Run:
         enc = rotation_sensor.get_val()
+        if enc <= 10:
+            continue
 
         if t == 100:
             # print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ", end="")
@@ -184,7 +186,7 @@ def sub1():
                     is_downward_possible = False
                     is_upward_possible = True
 
-                    print(f"stop {enc-i}")
+                    print(f"stop prev: {i}, now: {enc} def: {enc-i}")
 
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
