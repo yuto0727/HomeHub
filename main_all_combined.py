@@ -52,7 +52,7 @@ is_downward_possible = False
 Run = True
 
 def main():
-    global status_motor, enable_ir_control, status_light, Run
+    global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible
 
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
@@ -127,7 +127,7 @@ def main():
         GPIO.cleanup()
 
 def sub1():
-    global status_motor, enable_ir_control, status_light, Run
+    global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible
     print("sub1 start")
     while Run:
         enc = rotation_sensor.get_val()
