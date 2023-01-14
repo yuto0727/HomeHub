@@ -238,27 +238,45 @@ class LED_light:
         else:
             GPIO.output(self.pin, GPIO.LOW)
 
+def set_init_status():
+    global is_downward_possible, is_upward_possible
+    enc = rotation_sensor.get_val()
+
+    # スクリーンが閉じきった場合
+    if enc <= TARGET_CLOSE+MARGIN:
+        is_downward_possible = True
+        is_upward_possible = False
+
+    # スクリーンが開ききった状態の場合
+    elif TARGET_OPEN-MARGIN <= enc:
+        is_downward_possible = False
+        is_upward_possible = True
+
+    else:
+        is_downward_possible = True
+        is_upward_possible = True
 
 
-def _dev():
-    motor = Move_Motor(MOTOR_A, MOTOR_B)
-    rotation_sensor = AD_Converter()
-    # down: 1020, up: 32
 
-    try:
-        s = int(input("sec*10: "))
-        d = input("action: ")
+# def _dev():
+#     motor = Move_Motor(MOTOR_A, MOTOR_B)
+#     rotation_sensor = AD_Converter()
+#     # down: 1020, up: 32
 
-        motor.move(speed=50, action=d)
-        for i in range(s):
-            enc = rotation_sensor.get_val()
-            print(enc)
-            sleep(0.1)
-        motor.move(speed=0, action="stop")
+#     try:
+#         s = int(input("sec*10: "))
+#         d = input("action: ")
 
-    except KeyboardInterrupt:
-        motor.move(speed=0, action="stop")
-        GPIO.cleanup()
+#         motor.move(speed=50, action=d)
+#         for i in range(s):
+#             enc = rotation_sensor.get_val()
+#             print(enc)
+#             sleep(0.1)
+#         motor.move(speed=0, action="stop")
+
+#     except KeyboardInterrupt:
+#         motor.move(speed=0, action="stop")
+#         GPIO.cleanup()
 
 
 # 制御インスタンス作成
