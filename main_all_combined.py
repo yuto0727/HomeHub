@@ -107,6 +107,7 @@ def main():
                     if is_upward_possible:
                         print("change status up")
                         status_motor = "up"
+                        is_downward_possible = True
 
                 # volume_downボタン -> モーターdown & 上昇可能フラグたてる
                 elif key_name == "firetv:volume_down" and enable_ir_control:
@@ -114,6 +115,7 @@ def main():
                     if is_downward_possible:
                         print("change status down")
                         status_motor = "down"
+                        is_upward_possible = True
 
                 # volume_muteボタン -> モーター停止
                 elif key_name == "firetv:volume_mute":
@@ -133,35 +135,12 @@ def main():
 def sub1():
     global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible
     print("sub1 start")
+    i = "none"
     while Run:
         enc = rotation_sensor.get_val()
 
-        # print("\r", status_motor, is_downward_possible, is_upward_possible, enc, "      ", end="")
-        print(enc)
+        print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {i}", end="")
 
-        # モーター動作終了判定
-        if is_upward_possible and is_downward_possible:
-
-            # スクリーンが閉じきった場合
-            if enc <= TARGET_CLOSE+MARGIN:
-                print("a")
-                motor.stop()
-                status_motor = "stop"
-                is_downward_possible = True
-                is_upward_possible = False
-
-            # スクリーンが開ききった状態の場合
-            elif TARGET_OPEN-MARGIN <= enc:
-                print("b")
-                motor.stop()
-                status_motor = "stop"
-                is_downward_possible = False
-                is_upward_possible = True
-
-        elif TARGET_CLOSE+(MARGIN*2) < enc < TARGET_OPEN-(MARGIN*2):
-            print("c")
-            is_downward_possible = True
-            is_upward_possible = True
 
         # モーター動作分岐
         if status_motor == "stop":
@@ -172,6 +151,13 @@ def sub1():
             if enc-TARGET_CLOSE >= SLOW_DIFF:
                 motor.move(speed=MOTOR_POWER_MAX, action="up")
 
+            # しきい値を超えた場合 -> モーター停止
+            elif enc <= TARGET_CLOSE:
+                    motor.stop()
+                    status_motor = "stop"
+                    is_downward_possible = False
+                    is_upward_possible = True
+
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
                 power = min(max(MOTOR_POWER_MIN, enc-TARGET_CLOSE), 100)
@@ -181,6 +167,13 @@ def sub1():
             # しきい値とSLOW_DIFF以上の差がある場合 -> 通常スピードで動作
             if TARGET_OPEN-enc >= SLOW_DIFF:
                 motor.move(speed=MOTOR_POWER_MAX, action="down")
+
+            # しきい値を超えた場合 -> モーター停止
+            elif TARGET_OPEN <= enc:
+                    motor.stop()
+                    status_motor = "stop"
+                    is_downward_possible = True
+                    is_upward_possible = False
 
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
