@@ -1,7 +1,7 @@
 from time import sleep
 from threading import Thread
 import RPi.GPIO as GPIO
-import sys, spidev, subprocess, pigpio, json
+import sys, spidev, subprocess, pigpio, json, os
 
 import irrp
 
@@ -37,11 +37,12 @@ irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
 irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
 
 # IR送信コマンドパス設定
-CMD_PROJECTOR = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices projector"
-CMD_light_ON = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices light:on"
-CMD_light_OFF = "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/codes_for_devices light:off"
+PATH = os.getcwd()
+CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices projector"
+CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices light:on"
+CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices light:off"
 
-PATH_IR = "/home/yuto/HomeHub/codes_for_control"
+PATH_IR = f"{PATH}/codes_for_control"
 
 # デバイス制御変数
 enable_ir_control = False
@@ -99,38 +100,39 @@ def main():
 
                 # 照合結果によって分岐
                 # powerボタン -> LEDライト点灯・消灯 & IR制御有効化・無効化
-                if key_name == "firetv:power":
+                if key_name == "firetv:power" and enable_ir_control:
                     # print("press power")
                     status_light = not status_light
-                    enable_ir_control = not enable_ir_control
-
-                    # LED切り替え
+                    enable_ir_control = False
                     led.switch(status_light)
 
                 # volume_upボタン -> モーターup & 下降可能フラグたてる
                 elif key_name == "firetv:volume_up" and enable_ir_control:
                     # print("press volume_up")
                     if is_upward_possible:
-                        # print("change status up")
                         status_motor = "up"
                         is_downward_possible = True
+                        enable_ir_control = False
 
                 # volume_downボタン -> モーターdown & 上昇可能フラグたてる
                 elif key_name == "firetv:volume_down" and enable_ir_control:
                     # print("press volume_down")
                     if is_downward_possible:
-                        # print("change status down")
                         status_motor = "down"
                         is_upward_possible = True
+                        enable_ir_control = False
 
-                # volume_muteボタン -> モーター停止
+                # volume_muteボタン -> 無条件モーター停止
                 elif key_name == "firetv:volume_mute":
                     # print("press volume_mute")
-                    # muteボタン -> 無条件モーター停止
                     status_motor = "stop"
+                    enable_ir_control = False
+
+                elif key_name == "firetv:power":
+                    enable_ir_control = True
 
                 else:
-                    pass
+                    enable_ir_control = False
 
     except KeyboardInterrupt:
         Run = False
