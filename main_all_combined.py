@@ -132,6 +132,7 @@ def main():
                 elif key_name == "firetv:power":
                     print("press power -> enable")
                     enable_ir_control = True
+                    Thread(target=sub2).start()
 
                 else:
                     enable_ir_control = False
@@ -205,6 +206,12 @@ def sub1():
 
         i = enc
 
+def sub2():
+    while enable_ir_control:
+        led.switch(True)
+        sleep(0.5)
+        led.switch(False)
+        sleep(0.5)
 
 class Move_Motor:
     def __init__(self, pin_motor_A, pin_motor_B):
