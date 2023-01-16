@@ -130,7 +130,7 @@ def main():
                     enable_ir_control = False
 
                 elif key_name == "firetv:power":
-                    print("press power")
+                    print("press power -> enable")
                     enable_ir_control = True
 
                 else:
