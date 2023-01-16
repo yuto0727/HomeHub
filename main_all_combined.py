@@ -38,6 +38,7 @@ irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
 
 # IR送信コマンドパス設定
 PATH = os.getcwd()
+print(f"path: {PATH}")
 CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices projector"
 CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices light:on"
 CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices light:off"
@@ -101,14 +102,14 @@ def main():
                 # 照合結果によって分岐
                 # powerボタン -> LEDライト点灯・消灯 & IR制御有効化・無効化
                 if key_name == "firetv:power" and enable_ir_control:
-                    # print("press power")
+                    print("press power")
                     status_light = not status_light
                     enable_ir_control = False
                     led.switch(status_light)
 
                 # volume_upボタン -> モーターup & 下降可能フラグたてる
                 elif key_name == "firetv:volume_up" and enable_ir_control:
-                    # print("press volume_up")
+                    print("press volume_up")
                     if is_upward_possible:
                         status_motor = "up"
                         is_downward_possible = True
@@ -116,7 +117,7 @@ def main():
 
                 # volume_downボタン -> モーターdown & 上昇可能フラグたてる
                 elif key_name == "firetv:volume_down" and enable_ir_control:
-                    # print("press volume_down")
+                    print("press volume_down")
                     if is_downward_possible:
                         status_motor = "down"
                         is_upward_possible = True
@@ -124,7 +125,7 @@ def main():
 
                 # volume_muteボタン -> 無条件モーター停止
                 elif key_name == "firetv:volume_mute":
-                    # print("press volume_mute")
+                    print("press volume_mute")
                     status_motor = "stop"
                     enable_ir_control = False
 
