@@ -59,6 +59,7 @@ import time
 import json
 import os
 import argparse
+import shutil
 
 import pigpio  # http://abyz.co.uk/rpi/pigpio/python.html
 
@@ -232,6 +233,7 @@ def backup(f):
 
     try:
         os.rename(os.path.realpath(f), os.path.realpath(f)+".bak")
+        shutil.move(os.path.realpath(f)+".bak", (os.path.realpath(f)+".bak").replace("ir_codes", "ir_codes/backups"))
     except:
         pass
 
