@@ -103,9 +103,7 @@ def main():
                 # powerボタン -> LEDライト点灯・消灯 & IR制御有効化・無効化
                 if key_name == "firetv:power" and enable_ir_control:
                     print("press power")
-                    status_light = not status_light
                     enable_ir_control = False
-                    led.switch(status_light)
 
                 # volume_upボタン -> モーターup & 下降可能フラグたてる
                 elif key_name == "firetv:volume_up" and enable_ir_control:
@@ -207,11 +205,19 @@ def sub1():
         i = enc
 
 def sub2():
+    global status_light
+    t = 0
+    status_light = True
+
     while enable_ir_control:
-        led.switch(True)
-        sleep(0.5)
-        led.switch(False)
-        sleep(0.5)
+        if t == 25:
+            status_light = True
+        elif t == 50:
+            status_light = False
+            t = 0
+        led.switch(status_light)
+        sleep(0.02)
+        t += 1
 
 class Move_Motor:
     def __init__(self, pin_motor_A, pin_motor_B):
