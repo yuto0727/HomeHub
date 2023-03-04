@@ -211,9 +211,9 @@ def sub2():
 
     while enable_ir_control:
         if t == 25:
-            status_light = True
-        elif t == 50:
             status_light = False
+        elif t == 50:
+            status_light = True
             t = 0
         led.switch(status_light)
         sleep(0.02)
