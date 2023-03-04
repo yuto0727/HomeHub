@@ -38,12 +38,12 @@ irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
 
 # IR送信コマンドパス設定
 PATH = os.path.dirname(__file__)
-print(f"path: {PATH}")
-CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices projector"
-CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices light:on"
-CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/codes_for_devices light:off"
-
 PATH_IR = f"{PATH}/ir_codes/codes_for_control"
+print(f"path: {PATH}")
+CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices projector"
+CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:on"
+CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:off"
+
 
 # デバイス制御変数
 enable_ir_control = False
