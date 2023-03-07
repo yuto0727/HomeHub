@@ -6,54 +6,58 @@ import sys, spidev, subprocess, pigpio, json, os, logging
 import irrp
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="screen_cont.log")
+logging.info("start script")
 
-GPIO.setmode(GPIO.BCM)
+try:
+    GPIO.setmode(GPIO.BCM)
 
-# GPIOピン設定
-MOTOR_A = 20
-MOTOR_B = 21
-LED = 16
-irrp.GPIO = 18
+    # GPIOピン設定
+    MOTOR_A = 20
+    MOTOR_B = 21
+    LED = 16
+    irrp.GPIO = 18
 
-# ロータリーエンコーダしきい値設定
-TARGET_CLOSE = 18
-TARGET_OPEN = 1023
+    # ロータリーエンコーダしきい値設定
+    TARGET_CLOSE = 18
+    TARGET_OPEN = 1023
 
-# スクリーン巻き上げ判定定数設定
-MARGIN = 3
-MOTOR_POWER_MAX = 100
-MOTOR_POWER_MIN = 25
-SLOW_DIFF = MOTOR_POWER_MAX-MOTOR_POWER_MIN
+    # スクリーン巻き上げ判定定数設定
+    MARGIN = 3
+    MOTOR_POWER_MAX = 100
+    MOTOR_POWER_MIN = 25
+    SLOW_DIFF = MOTOR_POWER_MAX-MOTOR_POWER_MIN
 
-# IR関連定数設定
-irrp.GLITCH = 100
-irrp.PRE_MS = 200
-irrp.POST_MS = 15
-irrp.VERBOSE = False
-irrp.SHORT = 10
-irrp.TOLERANCE = 15
-irrp.POST_US = irrp.POST_MS * 1000
-irrp.PRE_US = irrp.PRE_MS * 1000
-irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
-irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
+    # IR関連定数設定
+    irrp.GLITCH = 100
+    irrp.PRE_MS = 200
+    irrp.POST_MS = 15
+    irrp.VERBOSE = False
+    irrp.SHORT = 10
+    irrp.TOLERANCE = 15
+    irrp.POST_US = irrp.POST_MS * 1000
+    irrp.PRE_US = irrp.PRE_MS * 1000
+    irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
+    irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
 
-# IR送信コマンドパス設定
-PATH = os.path.dirname(__file__)
-PATH_IR = f"{PATH}/ir_codes/codes_for_control"
-print(f"path: {PATH}")
-CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices projector"
-CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:on"
-CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:off"
+    # IR送信コマンドパス設定
+    PATH = os.path.dirname(__file__)
+    PATH_IR = f"{PATH}/ir_codes/codes_for_control"
+    print(f"path: {PATH}")
+    CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices projector"
+    CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:on"
+    CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:off"
 
-# デバイス制御変数
-enable_ir_control = False
-status_light = False
-status_motor = "stop"
-is_upward_possible = False
-is_downward_possible = False
+    # デバイス制御変数
+    enable_ir_control = False
+    status_light = False
+    status_motor = "stop"
+    is_upward_possible = False
+    is_downward_possible = False
 
-# プロセス停止用変数
-is_running = True
+    # プロセス停止用変数
+    is_running = True
+except:
+    logging.warning("init error")
 
 def main():
     global status_motor, enable_ir_control, status_light, is_running, is_upward_possible, is_downward_possible
@@ -322,5 +326,6 @@ if __name__ == "__main__":
     rotation_sensor = AD_Converter()
     motor = Move_Motor(MOTOR_A, MOTOR_B)
 
+    logging.info("call main")
     main()
     # _dev()
