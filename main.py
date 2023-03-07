@@ -16,8 +16,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(na
 logging.info("script start")
 
 # 外部スクリプトimport
-sys.path.append(PATH)
 try:
+    sys.path.append(PATH)
     import irrp
     irrp.GPIO = 18
     irrp.GLITCH = 100
@@ -30,6 +30,7 @@ try:
     irrp.PRE_US = irrp.PRE_MS * 1000
     irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
     irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
+    logging.info("irrp init ok")
 
 except Exception as e:
     logging.warning(str(e))
@@ -323,6 +324,7 @@ def set_init_status():
 #         motor.move(speed=0, action="stop")
 #         GPIO.cleanup()
 
+logging.info("start if")
 if __name__ == "__main__":
     led = LED_light(LED)
     rotation_sensor = AD_Converter()
