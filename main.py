@@ -3,61 +3,59 @@ from threading import Thread
 import RPi.GPIO as GPIO
 import sys, spidev, subprocess, pigpio, json, os, logging
 
+# ロガー設定
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="screen_cont.log")
+logging.info("script start")
+
+# コマンドパス設定
+PATH = os.path.dirname(__file__)
+print(f"path: {PATH}")
+PATH_IR = f"{PATH}/ir_codes/codes_for_control"
+CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices projector"
+CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:on"
+CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:off"
+
+# 外部スクリプトimport
+sys.path.append(PATH)
 import irrp
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="screen_cont.log")
-logging.info("start script")
+# GPIOピン設定
+MOTOR_A = 20
+MOTOR_B = 21
+LED = 16
+irrp.GPIO = 18
 
-try:
-    GPIO.setmode(GPIO.BCM)
+# ロータリーエンコーダしきい値設定
+TARGET_CLOSE = 18
+TARGET_OPEN = 1023
 
-    # GPIOピン設定
-    MOTOR_A = 20
-    MOTOR_B = 21
-    LED = 16
-    irrp.GPIO = 18
+# スクリーン巻き上げ判定定数設定
+MARGIN = 3
+MOTOR_POWER_MAX = 100
+MOTOR_POWER_MIN = 25
+SLOW_DIFF = MOTOR_POWER_MAX-MOTOR_POWER_MIN
 
-    # ロータリーエンコーダしきい値設定
-    TARGET_CLOSE = 18
-    TARGET_OPEN = 1023
+# IR関連定数設定
+irrp.GLITCH = 100
+irrp.PRE_MS = 200
+irrp.POST_MS = 15
+irrp.VERBOSE = False
+irrp.SHORT = 10
+irrp.TOLERANCE = 15
+irrp.POST_US = irrp.POST_MS * 1000
+irrp.PRE_US = irrp.PRE_MS * 1000
+irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
+irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
 
-    # スクリーン巻き上げ判定定数設定
-    MARGIN = 3
-    MOTOR_POWER_MAX = 100
-    MOTOR_POWER_MIN = 25
-    SLOW_DIFF = MOTOR_POWER_MAX-MOTOR_POWER_MIN
+# デバイス制御変数
+enable_ir_control = False
+status_light = False
+status_motor = "stop"
+is_upward_possible = False
+is_downward_possible = False
 
-    # IR関連定数設定
-    irrp.GLITCH = 100
-    irrp.PRE_MS = 200
-    irrp.POST_MS = 15
-    irrp.VERBOSE = False
-    irrp.SHORT = 10
-    irrp.TOLERANCE = 15
-    irrp.POST_US = irrp.POST_MS * 1000
-    irrp.PRE_US = irrp.PRE_MS * 1000
-    irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
-    irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
-
-    # IR送信コマンドパス設定
-    PATH = os.path.dirname(__file__)
-    PATH_IR = f"{PATH}/ir_codes/codes_for_control"
-    print(f"path: {PATH}")
-    CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices projector"
-    CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:on"
-    CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:off"
-
-    # デバイス制御変数
-    enable_ir_control = False
-    status_light = False
-    status_motor = "stop"
-    is_upward_possible = False
-    is_downward_possible = False
-
-    # プロセス停止用変数
-    is_running = True
-except:
-    logging.warning("init error")
+# プロセス停止用変数
+is_running = True
 
 def main():
     global status_motor, enable_ir_control, status_light, is_running, is_upward_possible, is_downward_possible
@@ -232,6 +230,7 @@ class Move_Motor:
         self.pin_motor_A = pin_motor_A
         self.pin_motor_B = pin_motor_B
 
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pin_motor_A, GPIO.OUT)
         GPIO.setup(self.pin_motor_B, GPIO.OUT)
 
@@ -274,6 +273,7 @@ class AD_Converter:
 class LED_light:
     def __init__(self, pin):
         self.pin = pin
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pin, GPIO.OUT)
         GPIO.output(self.pin, GPIO.LOW)
 
