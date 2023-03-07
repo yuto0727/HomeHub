@@ -3,10 +3,6 @@ from threading import Thread
 import RPi.GPIO as GPIO
 import sys, spidev, subprocess, pigpio, json, os, logging
 
-# ロガー設定
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="screen_cont.log")
-logging.info("script start")
-
 # コマンドパス設定
 PATH = os.path.dirname(__file__)
 print(f"path: {PATH}")
@@ -14,6 +10,10 @@ PATH_IR = f"{PATH}/ir_codes/codes_for_control"
 CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices projector"
 CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:on"
 CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:off"
+
+# ロガー設定
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename=f"{PATH}/logs/screen_cont.log")
+logging.info("script start")
 
 # 外部スクリプトimport
 sys.path.append(PATH)
