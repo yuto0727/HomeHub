@@ -324,7 +324,7 @@ def set_init_status():
 #         motor.move(speed=0, action="stop")
 #         GPIO.cleanup()
 
-logging.info("start if")
+logging.info(f"start if name:{__name__}")
 if __name__ == "__main__":
     led = LED_light(LED)
     rotation_sensor = AD_Converter()
