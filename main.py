@@ -13,7 +13,7 @@ CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices li
 
 # ロガー設定
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename=f"{PATH}/logs/screen_cont.log")
-logging.info("script start")
+logging.info("---------------script start---------------")
 
 # 外部スクリプトimport
 try:
