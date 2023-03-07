@@ -326,10 +326,15 @@ def set_init_status():
 
 logging.info(f"start if name:{__name__}")
 if __name__ == "__main__":
-    led = LED_light(LED)
-    rotation_sensor = AD_Converter()
-    motor = Move_Motor(MOTOR_A, MOTOR_B)
+    try:
+        led = LED_light(LED)
+        rotation_sensor = AD_Converter()
+        motor = Move_Motor(MOTOR_A, MOTOR_B)
 
-    logging.info("call main")
-    main()
-    # _dev()
+        logging.info("call main")
+        main()
+        # _dev()
+    except Exception as e:
+        logging.warning(str(e))
+
+logging.info("----------------script end----------------")
