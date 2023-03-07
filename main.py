@@ -17,7 +17,10 @@ logging.info("script start")
 
 # 外部スクリプトimport
 sys.path.append(PATH)
-import irrp
+try:
+    import irrp
+except Exception as e:
+    logging.warning(str(e))
 
 # GPIOピン設定
 MOTOR_A = 20
