@@ -16,24 +16,21 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(na
 logging.info("---------------script start---------------")
 
 # 外部スクリプトimport
-try:
-    sys.path.append(PATH)
-    import irrp
-    irrp.GPIO = 18
-    irrp.GLITCH = 100
-    irrp.PRE_MS = 200
-    irrp.POST_MS = 15
-    irrp.VERBOSE = False
-    irrp.SHORT = 10
-    irrp.TOLERANCE = 15
-    irrp.POST_US = irrp.POST_MS * 1000
-    irrp.PRE_US = irrp.PRE_MS * 1000
-    irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
-    irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
-    logging.info("irrp init ok")
+sys.path.append(PATH)
+import irrp
 
-except Exception as e:
-    logging.warning(str(e))
+irrp.GPIO = 18
+irrp.GLITCH = 100
+irrp.PRE_MS = 200
+irrp.POST_MS = 15
+irrp.VERBOSE = False
+irrp.SHORT = 10
+irrp.TOLERANCE = 15
+irrp.POST_US = irrp.POST_MS * 1000
+irrp.PRE_US = irrp.PRE_MS * 1000
+irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
+irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
+logging.info("irrp init ok")
 
 # GPIOピン設定
 MOTOR_A = 20
@@ -335,6 +332,8 @@ if __name__ == "__main__":
         main()
         # _dev()
     except Exception as e:
-        logging.warning(str(e))
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        logging.warning(f"error:{e} ({exc_type}) at line{exc_tb.tb_lineno} in {fname}")
 
 logging.info("----------------script end----------------")
