@@ -5,7 +5,6 @@ import sys, spidev, subprocess, pigpio, json, os
 
 import irrp
 
-
 GPIO.setmode(GPIO.BCM)
 
 # GPIOピン設定
@@ -44,7 +43,6 @@ CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices pr
 CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:on"
 CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:off"
 
-
 # デバイス制御変数
 enable_ir_control = False
 status_light = False
@@ -53,10 +51,10 @@ is_upward_possible = False
 is_downward_possible = False
 
 # プロセス停止用変数
-Run = True
+is_running = True
 
 def main():
-    global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible, dev_
+    global status_motor, enable_ir_control, status_light, is_running, is_upward_possible, is_downward_possible
 
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
@@ -73,7 +71,7 @@ def main():
     irrp.fetching_code = False
 
     set_init_status()
-    Thread(target=sub1).start()
+    Thread(target=sub_loop_motor).start()
 
     led.switch(True)
     sleep(0.25)
@@ -130,35 +128,27 @@ def main():
                 elif key_name == "firetv:power":
                     print("press power -> enable")
                     enable_ir_control = True
-                    Thread(target=sub2).start()
+                    Thread(target=sub_loop_light).start()
 
                 else:
                     enable_ir_control = False
 
     except KeyboardInterrupt:
-        Run = False
+        is_running = False
         irrp.pi.stop()
         motor.stop()
         GPIO.cleanup()
 
-def sub1():
-    global status_motor, enable_ir_control, status_light, Run, is_upward_possible, is_downward_possible
-    print("sub1 start")
+def sub_loop_motor():
+    global status_motor, is_running, is_upward_possible, is_downward_possible
+    print("sub_loop_motor start")
     sleep(2)
-    i = 0
-    t = 0
-    while Run:
+    enc_prev = 0
+
+    while is_running:
         enc = rotation_sensor.get_val()
         if enc <= 10:
             continue
-
-        if t == 100:
-            # print("\r", f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ", end="")
-            # print(f"{status_motor}, down: {is_downward_possible}, up: {is_upward_possible}, enc: {enc}, dev: {enc-i}       ")
-            t = 0
-        else:
-            t += 1
-
 
         # モーター動作分岐
         if status_motor == "stop":
@@ -176,7 +166,7 @@ def sub1():
                     is_downward_possible = True
                     is_upward_possible = False
 
-                    print(f"stop prev: {i}, now: {enc} def: {enc-i}")
+                    print(f"stop prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
 
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
@@ -195,16 +185,16 @@ def sub1():
                     is_downward_possible = False
                     is_upward_possible = True
 
-                    print(f"stop prev: {i}, now: {enc} def: {enc-i}")
+                    print(f"stop prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
 
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
                 power = min(max(MOTOR_POWER_MIN, TARGET_OPEN-enc), 100)
                 motor.move(speed=power, action="down")
 
-        i = enc
+        enc_prev = enc
 
-def sub2():
+def sub_loop_light():
     global status_light
     t = 0
     status_light = True
@@ -293,8 +283,6 @@ def set_init_status():
         is_downward_possible = True
         is_upward_possible = True
 
-
-
 # def _dev():
 #     motor = Move_Motor(MOTOR_A, MOTOR_B)
 #     rotation_sensor = AD_Converter()
@@ -315,11 +303,10 @@ def set_init_status():
 #         motor.move(speed=0, action="stop")
 #         GPIO.cleanup()
 
-
-# 制御インスタンス作成
-motor = Move_Motor(MOTOR_A, MOTOR_B)
-led = LED_light(LED)
-rotation_sensor = AD_Converter()
 if __name__ == "__main__":
+    led = LED_light(LED)
+    rotation_sensor = AD_Converter()
+    motor = Move_Motor(MOTOR_A, MOTOR_B)
+
     main()
     # _dev()
