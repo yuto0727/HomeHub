@@ -5,7 +5,7 @@ import sys, spidev, subprocess, pigpio, json, os, logging
 
 import irrp
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="test.log")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="main.log")
 GPIO.setmode(GPIO.BCM)
 
 # GPIOピン設定
