@@ -1,10 +1,11 @@
 from time import sleep
 from threading import Thread
 import RPi.GPIO as GPIO
-import sys, spidev, subprocess, pigpio, json, os
+import sys, spidev, subprocess, pigpio, json, os, logging
 
 import irrp
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="test.log")
 GPIO.setmode(GPIO.BCM)
 
 # GPIOピン設定
@@ -55,6 +56,7 @@ is_running = True
 
 def main():
     global status_motor, enable_ir_control, status_light, is_running, is_upward_possible, is_downward_possible
+    logging.info("init process start")
 
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
@@ -62,6 +64,7 @@ def main():
     irrp.pi.set_glitch_filter(irrp.GPIO, irrp.GLITCH)
     irrp.pi.callback(irrp.GPIO, pigpio.EITHER_EDGE, irrp.cbf)
     if not irrp.pi.connected:
+        logging.warning("cannot connect to pigpio")
         exit(0)
 
     # IR関連変数初期化
@@ -70,12 +73,19 @@ def main():
     irrp.code = []
     irrp.fetching_code = False
 
+    # スクリーンの状態取得
     set_init_status()
+
+    # サブプロセススタート
     Thread(target=sub_loop_motor).start()
 
-    led.switch(True)
-    sleep(0.25)
-    led.switch(False)
+    for i in range(3):
+        led.switch(True)
+        sleep(0.25)
+        led.switch(False)
+        sleep(0.25)
+
+    logging.info("main process started successfully")
 
     try:
         with open(PATH_IR) as f:
@@ -141,8 +151,9 @@ def main():
 
 def sub_loop_motor():
     global status_motor, is_running, is_upward_possible, is_downward_possible
-    print("sub_loop_motor start")
     sleep(2)
+    print("sub_loop_motor start")
+    logging.info("sub process started successfully")
     enc_prev = 0
 
     while is_running:
