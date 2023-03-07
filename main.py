@@ -5,7 +5,8 @@ import sys, spidev, subprocess, pigpio, json, os, logging
 
 import irrp
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="main.log")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename="screen_cont.log")
+
 GPIO.setmode(GPIO.BCM)
 
 # GPIOピン設定
@@ -148,6 +149,7 @@ def main():
         irrp.pi.stop()
         motor.stop()
         GPIO.cleanup()
+        logging.info("main process stopped")
 
 def sub_loop_motor():
     global status_motor, is_running, is_upward_possible, is_downward_possible
@@ -204,6 +206,7 @@ def sub_loop_motor():
                 motor.move(speed=power, action="down")
 
         enc_prev = enc
+    logging.info("sub process stopped")
 
 def sub_loop_light():
     global status_light
