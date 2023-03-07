@@ -1,1 +1,1 @@
-python3 /home/yuto/HomeHub/main.py & >& /home/yuto/HomeHub/logs/test2.log
+python3 /home/yuto/HomeHub/main.py >& /home/yuto/HomeHub/logs/screen_stdout.log &

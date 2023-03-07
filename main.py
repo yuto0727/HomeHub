@@ -90,10 +90,6 @@ def main():
 
     logging.info("main process started successfully")
 
-
-    # わざとエラー
-    print(a)
-
     try:
         with open(PATH_IR) as f:
             key_config = json.load(f)
