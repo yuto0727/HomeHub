@@ -19,6 +19,18 @@ logging.info("script start")
 sys.path.append(PATH)
 try:
     import irrp
+    irrp.GPIO = 18
+    irrp.GLITCH = 100
+    irrp.PRE_MS = 200
+    irrp.POST_MS = 15
+    irrp.VERBOSE = False
+    irrp.SHORT = 10
+    irrp.TOLERANCE = 15
+    irrp.POST_US = irrp.POST_MS * 1000
+    irrp.PRE_US = irrp.PRE_MS * 1000
+    irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
+    irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
+
 except Exception as e:
     logging.warning(str(e))
 
@@ -26,7 +38,6 @@ except Exception as e:
 MOTOR_A = 20
 MOTOR_B = 21
 LED = 16
-irrp.GPIO = 18
 
 # ロータリーエンコーダしきい値設定
 TARGET_CLOSE = 18
@@ -37,18 +48,6 @@ MARGIN = 3
 MOTOR_POWER_MAX = 100
 MOTOR_POWER_MIN = 25
 SLOW_DIFF = MOTOR_POWER_MAX-MOTOR_POWER_MIN
-
-# IR関連定数設定
-irrp.GLITCH = 100
-irrp.PRE_MS = 200
-irrp.POST_MS = 15
-irrp.VERBOSE = False
-irrp.SHORT = 10
-irrp.TOLERANCE = 15
-irrp.POST_US = irrp.POST_MS * 1000
-irrp.PRE_US = irrp.PRE_MS * 1000
-irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
-irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
 
 # デバイス制御変数
 enable_ir_control = False
