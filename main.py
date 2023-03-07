@@ -321,19 +321,18 @@ def set_init_status():
 #         motor.move(speed=0, action="stop")
 #         GPIO.cleanup()
 
-logging.info(f"start if name:{__name__}")
 if __name__ == "__main__":
-    try:
-        led = LED_light(LED)
-        rotation_sensor = AD_Converter()
-        motor = Move_Motor(MOTOR_A, MOTOR_B)
+    # try:
+    led = LED_light(LED)
+    rotation_sensor = AD_Converter()
+    motor = Move_Motor(MOTOR_A, MOTOR_B)
 
-        logging.info("call main")
-        main()
+    logging.info("call main")
+    main()
         # _dev()
-    except Exception as e:
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        logging.warning(f"error:{e} ({exc_type}) at line{exc_tb.tb_lineno} in {fname}")
+    # except Exception as e:
+        # exc_type, exc_obj, exc_tb = sys.exc_info()
+        # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        # logging.warning(f"error:{e} ({exc_type}) at line{exc_tb.tb_lineno} in {fname}")
 
 logging.info("----------------script end----------------")
