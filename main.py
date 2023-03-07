@@ -90,17 +90,22 @@ def main():
 
     logging.info("main process started successfully")
 
+
+    # わざとエラー
+    print(a)
+
     try:
         with open(PATH_IR) as f:
             key_config = json.load(f)
-            print("reading...")
 
             # IR読み取り開始
+            print("main start")
             while True:
                 irrp.code = []
                 irrp.fetching_code = True
 
                 # 読み取り待ち
+                print("reading...")
                 while irrp.fetching_code:
                     sleep(0.02)
 
