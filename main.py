@@ -153,10 +153,17 @@ def sub_loop_motor():
 
     while is_running:
         enc = rotation_sensor.get_val()
-        if abs(enc-enc_prev) > 3:
-            print(f"!pass def: {enc-enc_prev}")
+        if (enc < 10):
+            print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev} !!pass")
+            continue
+
+        elif abs(enc-enc_prev) > 3:
+            print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev} !!pass")
             enc_prev = enc
             continue
+
+        else:
+            print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
 
         # モーター動作分岐
         if status_motor == "stop":
