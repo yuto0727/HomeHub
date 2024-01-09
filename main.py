@@ -105,9 +105,29 @@ def main():
 
                 # 照合結果によって分岐
                 # powerボタン -> LEDライト点灯・消灯 & IR制御有効化・無効化
-                if key_name == "firetv:power" and enable_ir_control:
+                if key_name == "firetv:power":
                     print("press power")
-                    enable_ir_control = False
+                    if enable_ir_control:
+                        enable_ir_control = False
+
+                        if status_light:
+                            status_light = False
+                            led.switch(False)
+                        else:
+                            status_light = True
+                            led.switch(False)
+                            sleep(0.2)
+                            led.switch(True)
+                    else:
+                        print("press power -> enable")
+                        enable_ir_control = True
+
+                        if status_light:
+                            led.switch(False)
+                            sleep(0.2)
+                            led.switch(True)
+                        else:
+                            led.switch(True)
 
                 # volume_upボタン -> モーターup & 下降可能フラグたてる
                 elif key_name == "firetv:volume_up" and enable_ir_control:
@@ -116,6 +136,7 @@ def main():
                         status_motor = "up"
                         is_downward_possible = True
                         enable_ir_control = False
+                        led.switch(status_light)
 
                 # volume_downボタン -> モーターdown & 上昇可能フラグたてる
                 elif key_name == "firetv:volume_down" and enable_ir_control:
@@ -124,17 +145,13 @@ def main():
                         status_motor = "down"
                         is_upward_possible = True
                         enable_ir_control = False
+                        led.switch(status_light)
 
                 # volume_muteボタン -> 無条件モーター停止
                 elif key_name == "firetv:volume_mute":
                     print("press volume_mute")
                     status_motor = "stop"
                     enable_ir_control = False
-
-                elif key_name == "firetv:power":
-                    print("press power -> enable")
-                    enable_ir_control = True
-                    Thread(target=sub_loop_light).start()
 
                 else:
                     enable_ir_control = False
@@ -154,16 +171,16 @@ def sub_loop_motor():
     while is_running:
         enc = rotation_sensor.get_val()
         if (enc < 10):
-            print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev} !!pass")
+            # print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev} !!pass")
             continue
 
         elif abs(enc-enc_prev) > 3:
-            print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev} !!pass")
+            # print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev} !!pass")
             enc_prev = enc
             continue
 
         else:
-            print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
+            # print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
 
         # モーター動作分岐
         if status_motor == "stop":
@@ -180,8 +197,7 @@ def sub_loop_motor():
                     status_motor = "stop"
                     is_downward_possible = True
                     is_upward_possible = False
-
-                    print(f"stop prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
+                    # print(f"stop prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
 
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
@@ -199,8 +215,7 @@ def sub_loop_motor():
                     status_motor = "stop"
                     is_downward_possible = False
                     is_upward_possible = True
-
-                    print(f"stop prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
+                    # print(f"stop prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
 
             # しきい値とSLOW_DIFF以内の差の場合 -> 差からパワー算出
             else:
@@ -208,21 +223,6 @@ def sub_loop_motor():
                 motor.move(speed=power, action="down")
 
         enc_prev = enc
-
-def sub_loop_light():
-    global status_light
-    t = 0
-    status_light = True
-
-    while enable_ir_control:
-        if t == 25:
-            status_light = False
-        elif t == 50:
-            status_light = True
-            t = 0
-        led.switch(status_light)
-        sleep(0.02)
-        t += 1
 
 class Move_Motor:
     def __init__(self, pin_motor_A, pin_motor_B):
