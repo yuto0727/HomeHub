@@ -1,0 +1,1 @@
+python3 /home/yuto/HomeHub/main.py &

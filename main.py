@@ -1,7 +1,7 @@
 from time import sleep
 from threading import Thread
 import RPi.GPIO as GPIO
-import sys, spidev, subprocess, pigpio, json, os, logging
+import sys, spidev, subprocess, pigpio, json, os
 
 # コマンドパス設定
 PATH = os.path.dirname(__file__)
@@ -11,9 +11,6 @@ CMD_PROJECTOR = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices pr
 CMD_light_ON = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:on"
 CMD_light_OFF = f"{PATH}/irrp.py -p -g17 -f {PATH}/ir_codes/codes_for_devices light:off"
 
-# ロガー設定
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s", filename=f"{PATH}/logs/screen_cont.log")
-logging.info("---------------script start---------------")
 
 # 外部スクリプトimport
 sys.path.append(PATH)
@@ -30,7 +27,6 @@ irrp.POST_US = irrp.POST_MS * 1000
 irrp.PRE_US = irrp.PRE_MS * 1000
 irrp.TOLER_MIN = (100 - irrp.TOLERANCE) / 100.0
 irrp.TOLER_MAX = (100 + irrp.TOLERANCE) / 100.0
-logging.info("irrp init ok")
 
 # GPIOピン設定
 MOTOR_A = 20
@@ -59,7 +55,6 @@ is_running = True
 
 def main():
     global status_motor, enable_ir_control, status_light, is_running, is_upward_possible, is_downward_possible
-    logging.info("init process start")
 
     # IR関連pigpio初期化
     irrp.pi = pigpio.pi()
@@ -67,7 +62,6 @@ def main():
     irrp.pi.set_glitch_filter(irrp.GPIO, irrp.GLITCH)
     irrp.pi.callback(irrp.GPIO, pigpio.EITHER_EDGE, irrp.cbf)
     if not irrp.pi.connected:
-        logging.warning("cannot connect to pigpio")
         exit(0)
 
     # IR関連変数初期化
@@ -87,8 +81,6 @@ def main():
         sleep(0.25)
         led.switch(False)
         sleep(0.25)
-
-    logging.info("main process started successfully")
 
     try:
         with open(PATH_IR) as f:
@@ -152,13 +144,11 @@ def main():
         irrp.pi.stop()
         motor.stop()
         GPIO.cleanup()
-        logging.info("main process stopped")
 
 def sub_loop_motor():
     global status_motor, is_running, is_upward_possible, is_downward_possible
     sleep(2)
     print("sub_loop_motor start")
-    logging.info("sub process started successfully")
     enc_prev = 0
 
     while is_running:
@@ -209,7 +199,6 @@ def sub_loop_motor():
                 motor.move(speed=power, action="down")
 
         enc_prev = enc
-    logging.info("sub process stopped")
 
 def sub_loop_light():
     global status_light
@@ -328,7 +317,6 @@ if __name__ == "__main__":
     rotation_sensor = AD_Converter()
     motor = Move_Motor(MOTOR_A, MOTOR_B)
 
-    logging.info("call main")
     main()
         # _dev()
     # except Exception as e:
@@ -336,4 +324,3 @@ if __name__ == "__main__":
         # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         # logging.warning(f"error:{e} ({exc_type}) at line{exc_tb.tb_lineno} in {fname}")
 
-logging.info("----------------script end----------------")
