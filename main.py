@@ -179,7 +179,7 @@ def sub_loop_motor():
             enc_prev = enc
             continue
 
-        else:
+        # else:
             # print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
 
         # モーター動作分岐
