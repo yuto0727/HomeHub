@@ -153,7 +153,9 @@ def sub_loop_motor():
 
     while is_running:
         enc = rotation_sensor.get_val()
-        if enc <= 10:
+        if abs(enc-enc_prev) < 3:
+            print(f"!pass def: {enc-enc_prev}")
+            enc_prev = enc
             continue
 
         # モーター動作分岐
@@ -162,8 +164,6 @@ def sub_loop_motor():
 
         elif status_motor == "up":
             # しきい値とSLOW_DIFF以上の差がある場合 -> 通常スピードで動作
-            print(f"prev: {enc_prev}, now: {enc} def: {enc-enc_prev}")
-
             if enc-TARGET_CLOSE >= SLOW_DIFF:
                 motor.move(speed=MOTOR_POWER_MAX, action="up")
 
