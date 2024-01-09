@@ -153,7 +153,7 @@ def sub_loop_motor():
 
     while is_running:
         enc = rotation_sensor.get_val()
-        if abs(enc-enc_prev) < 3:
+        if abs(enc-enc_prev) > 3:
             print(f"!pass def: {enc-enc_prev}")
             enc_prev = enc
             continue
