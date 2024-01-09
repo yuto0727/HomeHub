@@ -116,7 +116,7 @@ def main():
                         else:
                             status_light = True
                             led.switch(False)
-                            sleep(0.2)
+                            sleep(0.1)
                             led.switch(True)
                     else:
                         print("press power -> enable")
@@ -124,7 +124,7 @@ def main():
 
                         if status_light:
                             led.switch(False)
-                            sleep(0.2)
+                            sleep(0.1)
                             led.switch(True)
                         else:
                             led.switch(True)
