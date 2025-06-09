@@ -1,392 +1,457 @@
 [
-    {
-        "id": "94329b1e3e6476eb",
-        "type": "tab",
-        "label": "フロー 1",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "745ac61b197beb9c",
-        "type": "exec",
-        "z": "94329b1e3e6476eb",
-        "command": "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/ir_codes/codes_for_devices light:on",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "",
-        "x": 1040,
-        "y": 640,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "18a41df2a3108433",
-        "type": "alexa-home",
-        "z": "94329b1e3e6476eb",
-        "conf": "7c4f69bad335942e",
-        "device": "196063",
-        "acknoledge": true,
-        "name": "電気",
-        "topic": "",
-        "x": 230,
-        "y": 500,
-        "wires": [
-            [
-                "868edf603b045316",
-                "5b19b21cdc6b4643"
-            ]
-        ]
-    },
-    {
-        "id": "868edf603b045316",
-        "type": "debug",
-        "z": "94329b1e3e6476eb",
-        "name": "debug",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 730,
-        "y": 500,
-        "wires": []
-    },
-    {
-        "id": "2dbadf7e525b3931",
-        "type": "alexa-home",
-        "z": "94329b1e3e6476eb",
-        "conf": "7c4f69bad335942e",
-        "device": "186781",
-        "acknoledge": true,
-        "name": "プロジェクター",
-        "topic": "",
-        "x": 260,
-        "y": 560,
-        "wires": [
-            [
-                "868edf603b045316",
-                "076a797a44f186fd"
-            ]
-        ]
-    },
-    {
-        "id": "6b9b0c8ac247d29e",
-        "type": "alexa-home",
-        "z": "94329b1e3e6476eb",
-        "conf": "7c4f69bad335942e",
-        "device": "186785",
-        "acknoledge": true,
-        "name": "エアコン",
-        "topic": "",
-        "x": 240,
-        "y": 620,
-        "wires": [
-            [
-                "868edf603b045316",
-                "b1b3fedf4285418e"
-            ]
-        ]
-    },
-    {
-        "id": "0a89b5c50e8ede6d",
-        "type": "alexa-home",
-        "z": "94329b1e3e6476eb",
-        "conf": "7c4f69bad335942e",
-        "device": "186782",
-        "acknoledge": true,
-        "name": "扇風機",
-        "topic": "",
-        "x": 230,
-        "y": 680,
-        "wires": [
-            [
-                "868edf603b045316",
-                "a267e39b376705c8"
-            ]
-        ]
-    },
-    {
-        "id": "5b19b21cdc6b4643",
-        "type": "switch",
-        "z": "94329b1e3e6476eb",
-        "name": "",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "true"
-            },
-            {
-                "t": "false"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 550,
-        "y": 640,
-        "wires": [
-            [
-                "745ac61b197beb9c"
-            ],
-            [
-                "745ac61b197beb9c",
-                "cbd54cabf23c2511"
-            ]
-        ]
-    },
-    {
-        "id": "41c171d24da61ac7",
-        "type": "exec",
-        "z": "94329b1e3e6476eb",
-        "command": "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/ir_codes/codes_for_devices light:off",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "",
-        "x": 1040,
-        "y": 780,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "7bf611cd101aead1",
-        "type": "exec",
-        "z": "94329b1e3e6476eb",
-        "command": "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/ir_codes/codes_for_devices projector",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "",
-        "x": 1050,
-        "y": 880,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "076a797a44f186fd",
-        "type": "switch",
-        "z": "94329b1e3e6476eb",
-        "name": "",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "true"
-            },
-            {
-                "t": "false"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 550,
-        "y": 880,
-        "wires": [
-            [
-                "7bf611cd101aead1"
-            ],
-            [
-                "7bf611cd101aead1",
-                "62d88f861f8f6855"
-            ]
-        ]
-    },
-    {
-        "id": "cbd54cabf23c2511",
-        "type": "delay",
-        "z": "94329b1e3e6476eb",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "0.1",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 750,
-        "y": 700,
-        "wires": [
-            [
-                "41c171d24da61ac7"
-            ]
-        ]
-    },
-    {
-        "id": "62d88f861f8f6855",
-        "type": "delay",
-        "z": "94329b1e3e6476eb",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "2",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 740,
-        "y": 960,
-        "wires": [
-            [
-                "7bf611cd101aead1"
-            ]
-        ]
-    },
-    {
-        "id": "bcd2d7ac8d314c58",
-        "type": "exec",
-        "z": "94329b1e3e6476eb",
-        "command": "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/ir_codes/codes_for_devices fun",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "",
-        "x": 1030,
-        "y": 1060,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "a267e39b376705c8",
-        "type": "switch",
-        "z": "94329b1e3e6476eb",
-        "name": "",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "true"
-            },
-            {
-                "t": "false"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 550,
-        "y": 1060,
-        "wires": [
-            [
-                "bcd2d7ac8d314c58"
-            ],
-            [
-                "bcd2d7ac8d314c58"
-            ]
-        ]
-    },
-    {
-        "id": "293c6f70dabe493d",
-        "type": "exec",
-        "z": "94329b1e3e6476eb",
-        "command": "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/ir_codes/codes_for_devices air2:on",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "",
-        "x": 1040,
-        "y": 1140,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "b1b3fedf4285418e",
-        "type": "switch",
-        "z": "94329b1e3e6476eb",
-        "name": "",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "true"
-            },
-            {
-                "t": "false"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 550,
-        "y": 1140,
-        "wires": [
-            [
-                "293c6f70dabe493d"
-            ],
-            [
-                "1204d492e2d96b09"
-            ]
-        ]
-    },
-    {
-        "id": "1204d492e2d96b09",
-        "type": "exec",
-        "z": "94329b1e3e6476eb",
-        "command": "python3 /home/yuto/HomeHub/irrp.py -p -g17 -f /home/yuto/HomeHub/ir_codes/codes_for_devices air2:off",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "",
-        "x": 1040,
-        "y": 1200,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "7c4f69bad335942e",
-        "type": "alexa-home-conf",
-        "username": "betchi"
-    }
+  {
+    "id": "cb9d4d471ccbbabb",
+    "type": "tab",
+    "label": "フロー 1",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "59640f02b63c7700",
+    "type": "alexa-home",
+    "z": "cb9d4d471ccbbabb",
+    "conf": "e52a15cf533c6776",
+    "device": "196063",
+    "acknoledge": true,
+    "name": "電気",
+    "topic": "",
+    "x": 370,
+    "y": 240,
+    "wires": [
+      [
+        "3b417eec8163aee2"
+      ]
+    ]
+  },
+  {
+    "id": "3b417eec8163aee2",
+    "type": "switch",
+    "z": "cb9d4d471ccbbabb",
+    "name": "",
+    "property": "payload",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "true"
+      },
+      {
+        "t": "false"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 2,
+    "x": 610,
+    "y": 240,
+    "wires": [
+      [
+        "312d1dc4e380bdb5"
+      ],
+      [
+        "9b3231588cee6c75",
+        "312d1dc4e380bdb5"
+      ]
+    ]
+  },
+  {
+    "id": "9b3231588cee6c75",
+    "type": "delay",
+    "z": "cb9d4d471ccbbabb",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "300",
+    "timeoutUnits": "milliseconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 830,
+    "y": 300,
+    "wires": [
+      [
+        "4c16efb043dcc093"
+      ]
+    ]
+  },
+  {
+    "id": "312d1dc4e380bdb5",
+    "type": "template",
+    "z": "cb9d4d471ccbbabb",
+    "name": "light:on",
+    "field": "command",
+    "fieldType": "msg",
+    "format": "text",
+    "syntax": "mustache",
+    "template": "light:on",
+    "output": "str",
+    "x": 1060,
+    "y": 240,
+    "wires": [
+      [
+        "0248c38190168f5e"
+      ]
+    ]
+  },
+  {
+    "id": "0248c38190168f5e",
+    "type": "exec",
+    "z": "cb9d4d471ccbbabb",
+    "command": "python /home/homebridge/HomeHub/irrp.py -p -g17 -f /home/homebridge/HomeHub/irdata.json",
+    "addpay": "command",
+    "append": "",
+    "useSpawn": "false",
+    "timer": "",
+    "winHide": false,
+    "oldrc": false,
+    "name": "",
+    "x": 1750,
+    "y": 460,
+    "wires": [
+      [],
+      [],
+      []
+    ]
+  },
+  {
+    "id": "4c16efb043dcc093",
+    "type": "template",
+    "z": "cb9d4d471ccbbabb",
+    "name": "light:power",
+    "field": "command",
+    "fieldType": "msg",
+    "format": "text",
+    "syntax": "mustache",
+    "template": "light:power",
+    "output": "str",
+    "x": 1070,
+    "y": 300,
+    "wires": [
+      [
+        "0248c38190168f5e"
+      ]
+    ]
+  },
+  {
+    "id": "9d863bf7d7a5f3e8",
+    "type": "alexa-home",
+    "z": "cb9d4d471ccbbabb",
+    "conf": "e52a15cf533c6776",
+    "device": "240885",
+    "acknoledge": true,
+    "name": "テレビ",
+    "topic": "",
+    "x": 370,
+    "y": 360,
+    "wires": [
+      [
+        "3ba9b13cb9244855"
+      ]
+    ]
+  },
+  {
+    "id": "3ba9b13cb9244855",
+    "type": "template",
+    "z": "cb9d4d471ccbbabb",
+    "name": "tv:power",
+    "field": "command",
+    "fieldType": "msg",
+    "format": "text",
+    "syntax": "mustache",
+    "template": "tv:power",
+    "output": "str",
+    "x": 1060,
+    "y": 360,
+    "wires": [
+      [
+        "0248c38190168f5e"
+      ]
+    ]
+  },
+  {
+    "id": "b5f6f45f955ad2f9",
+    "type": "alexa-home",
+    "z": "cb9d4d471ccbbabb",
+    "conf": "e52a15cf533c6776",
+    "device": "186782",
+    "acknoledge": true,
+    "name": "扇風機",
+    "topic": "",
+    "x": 370,
+    "y": 420,
+    "wires": [
+      [
+        "9b5cba54aee05afe"
+      ]
+    ]
+  },
+  {
+    "id": "8e850074938fb7dc",
+    "type": "alexa-home",
+    "z": "cb9d4d471ccbbabb",
+    "conf": "e52a15cf533c6776",
+    "device": "240883",
+    "acknoledge": true,
+    "name": "暖房",
+    "topic": "",
+    "x": 370,
+    "y": 480,
+    "wires": [
+      [
+        "f6139efefc54497f"
+      ]
+    ]
+  },
+  {
+    "id": "4132025467f16170",
+    "type": "alexa-home",
+    "z": "cb9d4d471ccbbabb",
+    "conf": "e52a15cf533c6776",
+    "device": "240884",
+    "acknoledge": true,
+    "name": "冷房",
+    "topic": "",
+    "x": 370,
+    "y": 540,
+    "wires": [
+      [
+        "ac3801208f6c7f7a"
+      ]
+    ]
+  },
+  {
+    "id": "bbeb9c945cfd4156",
+    "type": "alexa-home",
+    "z": "cb9d4d471ccbbabb",
+    "conf": "e52a15cf533c6776",
+    "device": "186781",
+    "acknoledge": true,
+    "name": "プロジェクター",
+    "topic": "",
+    "x": 400,
+    "y": 660,
+    "wires": [
+      [
+        "852036c59744f2dc"
+      ]
+    ]
+  },
+  {
+    "id": "9b5cba54aee05afe",
+    "type": "template",
+    "z": "cb9d4d471ccbbabb",
+    "name": "fan:power",
+    "field": "command",
+    "fieldType": "msg",
+    "format": "text",
+    "syntax": "mustache",
+    "template": "fan:power",
+    "output": "str",
+    "x": 1060,
+    "y": 420,
+    "wires": [
+      [
+        "0248c38190168f5e"
+      ]
+    ]
+  },
+  {
+    "id": "e0a65d9701136851",
+    "type": "template",
+    "z": "cb9d4d471ccbbabb",
+    "name": "aircon:hot:on",
+    "field": "command",
+    "fieldType": "msg",
+    "format": "text",
+    "syntax": "mustache",
+    "template": "aircon:hot:on",
+    "output": "str",
+    "x": 1070,
+    "y": 480,
+    "wires": [
+      [
+        "0248c38190168f5e"
+      ]
+    ]
+  },
+  {
+    "id": "f6139efefc54497f",
+    "type": "switch",
+    "z": "cb9d4d471ccbbabb",
+    "name": "",
+    "property": "payload",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "true"
+      },
+      {
+        "t": "false"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 2,
+    "x": 610,
+    "y": 480,
+    "wires": [
+      [
+        "e0a65d9701136851"
+      ],
+      [
+        "0d135ecd4b63c702"
+      ]
+    ]
+  },
+  {
+    "id": "0d135ecd4b63c702",
+    "type": "template",
+    "z": "cb9d4d471ccbbabb",
+    "name": "aircon:off",
+    "field": "command",
+    "fieldType": "msg",
+    "format": "text",
+    "syntax": "mustache",
+    "template": "aircon:off",
+    "output": "str",
+    "x": 1060,
+    "y": 600,
+    "wires": [
+      [
+        "0248c38190168f5e"
+      ]
+    ]
+  },
+  {
+    "id": "2ae74d785e3bee45",
+    "type": "template",
+    "z": "cb9d4d471ccbbabb",
+    "name": "aircon:cool:on",
+    "field": "command",
+    "fieldType": "msg",
+    "format": "text",
+    "syntax": "mustache",
+    "template": "aircon:hot:on",
+    "output": "str",
+    "x": 1080,
+    "y": 540,
+    "wires": [
+      [
+        "0248c38190168f5e"
+      ]
+    ]
+  },
+  {
+    "id": "ac3801208f6c7f7a",
+    "type": "switch",
+    "z": "cb9d4d471ccbbabb",
+    "name": "",
+    "property": "payload",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "true"
+      },
+      {
+        "t": "false"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 2,
+    "x": 610,
+    "y": 540,
+    "wires": [
+      [
+        "2ae74d785e3bee45"
+      ],
+      [
+        "0d135ecd4b63c702"
+      ]
+    ]
+  },
+  {
+    "id": "52f7ea19ed7afcfa",
+    "type": "template",
+    "z": "cb9d4d471ccbbabb",
+    "name": "projector:power",
+    "field": "command",
+    "fieldType": "msg",
+    "format": "text",
+    "syntax": "mustache",
+    "template": "projector:power",
+    "output": "str",
+    "x": 1080,
+    "y": 660,
+    "wires": [
+      [
+        "0248c38190168f5e"
+      ]
+    ]
+  },
+  {
+    "id": "bd9133a3da5165a5",
+    "type": "delay",
+    "z": "cb9d4d471ccbbabb",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "1000",
+    "timeoutUnits": "milliseconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 840,
+    "y": 700,
+    "wires": [
+      [
+        "52f7ea19ed7afcfa"
+      ]
+    ]
+  },
+  {
+    "id": "852036c59744f2dc",
+    "type": "switch",
+    "z": "cb9d4d471ccbbabb",
+    "name": "",
+    "property": "payload",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "true"
+      },
+      {
+        "t": "false"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 2,
+    "x": 610,
+    "y": 660,
+    "wires": [
+      [
+        "52f7ea19ed7afcfa"
+      ],
+      [
+        "52f7ea19ed7afcfa",
+        "bd9133a3da5165a5"
+      ]
+    ]
+  },
+  {
+    "id": "e52a15cf533c6776",
+    "type": "alexa-home-conf",
+    "username": "betchi"
+  }
 ]
