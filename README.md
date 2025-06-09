@@ -1,16 +1,25 @@
-# スクリーンコントローラー＆スマートリモコンシステム
-電動スクリーンの制御と、Alexa対応スマトーリモコン機能の統合コントローラー
+# スマートリモコンシステム
 
-## Raspiの設定について
+Alexa 対応スマトーリモコン機能の統合コントローラー
+基本構成は NodeRed + Node-RED Alexa Home Skill Bridge
+IR 送受信には pigpio 使用
+
+## Raspi の設定について
+
+### Wifiが切れる問題
+参考：https://miyagadget.page/blog/2025/03/03/raspberrypi-wifi/
+
+
 ### ログファイルの肥大化防止
+
 参考：https://note.com/puerh_tea_/n/n44f86d3a062e
 
-``` bash
+```bash
 # 既存ログファイルの削除
 sudo find /var/log/ -type f -name \* -exec cp -f /dev/null {} \;
 ```
 
-``` bash
+```bash
 # ルールの変更
 sudo nano /etc/rsyslog.conf
 
