@@ -1,5 +1,5 @@
 [Unit]
-Description=Disable wlan0 power management after booted.
+Description=Disable wlan0 power management after boot
 Wants=network-online.target
 After=network-online.target
 

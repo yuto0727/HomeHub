@@ -5,3 +5,4 @@ dev_test
 test_A.py
 test_B.py
 test_C.py
+.env

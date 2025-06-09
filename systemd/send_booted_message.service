@@ -1,0 +1,13 @@
+[Unit]
+Description=Send LINE notification after boot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/homebridge/HomeHub
+ExecStart=/usr/bin/python3 /home/homebridge/HomeHub/sendBootedMessage.py
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
