@@ -1,0 +1,6 @@
+[Unit]
+Description=Reboot the system (scheduled)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl reboot
