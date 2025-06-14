@@ -1,0 +1,16 @@
+[Unit]
+Description=Wi-Fi Watchdog (auto reset & reboot)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/homebridge/HomeHub
+ExecStart=/usr/bin/python3 /home/homebridge/HomeHub/wifiWatchdog.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

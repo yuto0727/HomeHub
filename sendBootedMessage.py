@@ -4,12 +4,24 @@ import requests
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
+import subprocess
 
-# .env を読み込む（スクリプトと同じディレクトリに置く想定）
+
 load_dotenv(dotenv_path=Path(__file__).with_name(".env"))
-
 CHANNEL_ACCESS_TOKEN = os.getenv("CHANNEL_ACCESS_TOKEN")
 TO_USER_ID = os.getenv("TO_USER_ID")
+
+IFACE = "wlan0"
+
+
+def get_ip(iface: str = IFACE) -> str:
+    try:
+        out = subprocess.check_output(
+            ["ip", "-4", "addr", "show", iface], text=True
+        ).split()
+        return out[out.index("inet") + 1].split("/")[0]
+    except Exception:
+        return "N/A"
 
 
 def main():
@@ -21,8 +33,9 @@ def main():
             "環境変数 CHANNEL_ACCESS_TOKEN または TO_USER_ID が設定されていません"
         )
 
+    ip = get_ip()
     now = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-    message_text = f"{now}\nシステムが起動しました。"
+    message_text = f"Date: {now}\nIP: {ip}\nシステムが起動しました。"
 
     url = "https://api.line.me/v2/bot/message/push"
     headers = {
@@ -36,6 +49,7 @@ def main():
 
     r = requests.post(url, headers=headers, json=payload)
     r.raise_for_status()  # 失敗時は例外を投げて systemd 側にエラーを通知
+
 
 if __name__ == "__main__":
     main()
